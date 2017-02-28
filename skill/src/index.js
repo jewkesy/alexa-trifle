@@ -101,7 +101,7 @@ function invalidAnswer(intent, session, callback) {
 function processGameHelp(firstQuestion, session, callback) {
   var sessionAttributes = session.attributes;
   sessionAttributes.intent = 'HelpIntent';
-  var text = "Think of an object and I will try to guess what it is within twenty questions.\n";
+  var text = "TODO Answer three questions that steadily get more difficult.  Points increase for each correct answer.\n";
 
   var opts = helpers.buildNaturalLangList(Object.keys(sessionAttributes.options), 'or');
 
