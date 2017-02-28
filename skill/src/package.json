@@ -10,7 +10,6 @@
   "license": "MIT",
   "dependencies": {
     "async": "^2.1.4",
-    "cheerio": "^0.22.0",
     "mongodb": "^2.2.16",
     "request": "^2.79.0",
     "tracer": "^0.8.7"
