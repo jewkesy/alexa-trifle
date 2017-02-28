@@ -1,0 +1,14 @@
+StopIntent stop
+CancelIntent cancel
+HelpIntent help
+HelpIntent help me
+RepeatIntent repeat
+RepeatIntent repeat the question
+RepeatIntent say again
+RepeatIntent say the question
+RepeatIntent say the question again
+RepeatIntent I missed that
+RepeatIntent I didn't catch that
+RankIntent <TODO>
+ScoreIntent <TODO>
+PlayIntent <TODO>

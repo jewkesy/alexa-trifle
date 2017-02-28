@@ -1,0 +1,25 @@
+{
+  "intents": [
+    {
+      "intent": "StopIntent"
+    },
+    {
+      "intent": "CancelIntent"
+    },
+    {
+      "intent": "HelpIntent"
+    },
+    {
+      "intent": "RepeatIntent"
+    },
+    {
+      "intent": "PlayIntent"
+    },
+    {
+      "intent": "RankIntent"
+    },
+    {
+      "intent": "ScoreIntent"
+    }
+  ]
+}
