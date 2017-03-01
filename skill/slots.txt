@@ -1,0 +1,2 @@
+TrueFalse: [true, false]
+MultiChoice: [a, b, c, d]

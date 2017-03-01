@@ -23,11 +23,11 @@ exports.handler = function (event, context) {
 
     if (event.request.type === "LaunchRequest") {
       onLaunch(event.request, event.session, function callback(sessionAttributes, speechletResponse) {
-        context.succeed(buildResponse(sessionAttributes, speechletResponse));
+        context.succeed(skillHelper.buildResponse(sessionAttributes, speechletResponse));
       });
     } else if (event.request.type === "IntentRequest") {
       onIntent(event.request, event.session, function callback(sessionAttributes, speechletResponse) {
-        context.succeed(buildResponse(sessionAttributes, speechletResponse));
+        context.succeed(skillHelper.buildResponse(sessionAttributes, speechletResponse));
       });
     } else if (event.request.type === "SessionEndedRequest") {
       onSessionEnded(event.request, event.session);
@@ -38,29 +38,50 @@ exports.handler = function (event, context) {
   }
 };
 
-// Called when the session starts.
-function onSessionStarted(sessionStartedRequest, session) {
+function onSessionStarted(sessionStartedRequest, session) { // Called when the session starts.
   console.log("onSessionStarted requestId=" + sessionStartedRequest.requestId + ", sessionId=" + session.sessionId);
 }
 
-// Called when the user ends the session. Is not called when the app returns shouldEndSession=true.
-function onSessionEnded(sessionEndedRequest, session) {
+function onSessionEnded(sessionEndedRequest, session) { // Called when the user ends the session. Is not called when the app returns shouldEndSession=true.
   console.log("onSessionEnded requestId=" + sessionEndedRequest.requestId + ", sessionId=" + session.sessionId);
 }
 
-// Called when the user launches the app without specifying what they want.
-function onLaunch(launchRequest, session, callback) {
+function onLaunch(launchRequest, session, callback) { // Called when the user launches the app without specifying what they want.
   console.log("onLaunch requestId=" + launchRequest.requestId + ", sessionId=" + session.sessionId);
   startGame(session.user.userId, callback);
 }
 
-function buildResponse(sessionAttributes, speechletResponse) {
-  console.log('buildReponse', speechletResponse);
-  return {
-    version: "1.0",
-    sessionAttributes: sessionAttributes,
-    response: speechletResponse
-  };
+function onIntent(intentRequest, session, callback) { // Called when the user specifies an intent for this application.
+  // console.log("onIntent requestId=" + intentRequest.requestId + ", sessionId=" + session.sessionId + ", intentName=" + intentRequest.intent.name);
+  // console.log('onIntent', intentRequest)
+
+  var intent = intentRequest.intent, intentName = intentRequest.intent.name;
+
+  var sessionAttributes = session.attributes;
+
+  if (typeof sessionAttributes == 'undefined') return startGame(session.user.userId, callback);
+
+  switch(intentName) {
+    case "StopIntent":
+    case "CancelIntent":
+      return stop(intentName, session, callback);
+    case "HelpIntent":
+      return processGameHelp(false, session, callback);
+    case "PlayIntent":
+      return startGame(session.user.userId, callback);
+    case "TrueFalseIntent":
+      return processAnswer('TODO', session, callback);
+    case "MultiChoiceIntent":
+      return processAnswer('TODO', session, callback);
+    case "RepeatIntent":
+      return repeatQuestion(intentName, session, callback);
+    case "RankIntent":
+      return getRank(session, callback);
+    case "ScoreIntent":
+      return getScore(session, callback);
+    default:
+      return invalidAnswer(intentName, session, callback);
+  }
 }
 
 function stop(intent, session, callback) {
@@ -106,7 +127,7 @@ function processGameHelp(firstQuestion, session, callback) {
   var opts = helpers.buildNaturalLangList(Object.keys(sessionAttributes.options), 'or');
 
   if (firstQuestion) {
-    text += "Is it an " + opts;
+    text += "You can say " + opts + '.\n' + sessionAttributes.questionText;
   } else {
     text = "You can say " + opts + '.\n' + sessionAttributes.questionText;
   }
@@ -143,15 +164,18 @@ async.parallel({
     questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=hard', function (err, result) {
     return cb(err, result);
     });
+  },
+  getCategories: function (cb) {
+    questions.getCategories(QUESTIONS_URI + 'api_category.php', function (err, result) {
+      return cb (err, result);
+    });
+  },
+  getSessionKey: function (cb) {
+    // Session keys help prevent repeat questions, but needs persisting.  Prob not possible through Alexa downtime
+    questions.getSessionKey(QUESTIONS_URI + 'api_token.php?command=request', function (err, result) {
+      cb(err, result);
+    });
   }
 }, function(err, results) {
   return console.log(err, JSON.stringify(results));
 });
-
-// questions.getCategories(uri + 'api_category.php', function (err, result) {
-//   console.log(err, result);
-// });
-//
-// questions.getSessionKey(uri + 'api_token.php?command=request', function (err, result) {
-//   console.log(err, result);
-// });

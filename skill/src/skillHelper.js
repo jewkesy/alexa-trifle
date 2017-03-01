@@ -6,7 +6,10 @@ var helpers = require('./helpers.js');
 module.exports = {
 	buildSpeechletResponse: function (title, output, repromptText, shouldEndSession, cardText, cardType) {
 		return buildSpeechletResponse(title, output, repromptText, shouldEndSession, cardText, cardType);
-	}
+	},
+  buildResponse: function (sessionAttributes, speechletResponse) {
+    return buildResponse(sessionAttributes, speechletResponse);
+  }
 }
 
 function buildSpeechletResponse(title, output, repromptText, shouldEndSession, cardText, cardType) {
@@ -16,8 +19,8 @@ function buildSpeechletResponse(title, output, repromptText, shouldEndSession, c
   output = helpers.handleSpeechQuerks(output);
   return {
     outputSpeech: {
-      type: "SSML", //PlainText or SSML
-      ssml: "<speak>" + output + "</speak>"  //output
+      type: "SSML", // PlainText or SSML
+      ssml: "<speak>" + output + "</speak>"
       //  text: output
     },
     card: {
@@ -27,10 +30,19 @@ function buildSpeechletResponse(title, output, repromptText, shouldEndSession, c
     },
     reprompt: {
       outputSpeech: {
-        type: "PlainText",
+        type: "SSML", // PlainText or SSML
         text: repromptText
       }
     },
     shouldEndSession: shouldEndSession
+  };
+}
+
+function buildResponse(sessionAttributes, speechletResponse) {
+  console.log('buildReponse', speechletResponse);
+  return {
+    version: "1.0",
+    sessionAttributes: sessionAttributes,
+    response: speechletResponse
   };
 }

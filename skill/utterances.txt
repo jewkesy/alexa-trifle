@@ -2,6 +2,15 @@ StopIntent stop
 CancelIntent cancel
 HelpIntent help
 HelpIntent help me
+RankIntent what is my rank
+RankIntent what rank am i
+RankIntent what is my ranking
+RankIntent what ranking am i
+RankIntent what is my global ranking
+RankIntent tell me my rank
+ScoreIntent what is my score
+ScoreIntent what score am i
+ScoreIntent tell me my score
 RepeatIntent repeat
 RepeatIntent repeat the question
 RepeatIntent say again
@@ -9,6 +18,3 @@ RepeatIntent say the question
 RepeatIntent say the question again
 RepeatIntent I missed that
 RepeatIntent I didn't catch that
-RankIntent <TODO>
-ScoreIntent <TODO>
-PlayIntent <TODO>

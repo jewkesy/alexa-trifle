@@ -10,10 +10,21 @@
       "intent": "HelpIntent"
     },
     {
-      "intent": "RepeatIntent"
+      "intent": "TrueFalseIntent",
+      "slots": [{
+          "name": "TrueFalse",
+          "type": "TrueFalse"
+        }]
     },
     {
-      "intent": "PlayIntent"
+      "intent": "MultiChoiceIntent",
+      "slots": [{
+          "name": "MultiChoice",
+          "type": "MultiChoice"
+        }]
+    },
+    {
+      "intent": "RepeatIntent"
     },
     {
       "intent": "RankIntent"
