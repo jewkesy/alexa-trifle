@@ -11,7 +11,7 @@ var ALEXA_APP_ID =  process.env.ALEXA_APP_ID   || process.argv[3];
 
 exports.handler = function (event, context) {
   try {
-    console.log("event.session.application.applicationId=" + event.session.application.applicationId, "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID);
+    // console.log("event.session.application.applicationId=" + event.session.application.applicationId, "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID);
 
     // if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID) {
     //     context.fail("Invalid Application ID");
@@ -151,7 +151,7 @@ function processAnswer(answer, session, callback) {
 function startGame(userId, callback) {
   console.log(userId)
   questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', function (err, result) {
-
+    console.log(err, result)
     var retVal = {
       cardText: '\nQuestion 1. TODO',
       title: "New Game",
