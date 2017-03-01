@@ -25,6 +25,7 @@ function getCategories(uri, callback) {
 }
 
 function getQuestions(uri, callback) {
+  console.log(uri)
   request.get({
     headers: {'content-type':'application/json'},
     url:     uri

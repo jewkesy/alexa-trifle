@@ -1,21 +1,21 @@
 "use strict";
 
-var async = require('async');
+// var async = require('async');
 var questions = require('./questions.js');
 var skillHelper = require('./skillHelper.js');
 var helpers = require('./helpers.js');
 var console = require('tracer').colorConsole();
 
-var QUESTIONS_URI = process.env.quizURI || process.argv[2];
-var ALEXA_APP_ID =  process.env.appID   || process.argv[3];
+var QUESTIONS_URI = process.env.QUESTIONS_URI || process.argv[2];
+var ALEXA_APP_ID =  process.env.ALEXA_APP_ID   || process.argv[3];
 
 exports.handler = function (event, context) {
   try {
     console.log("event.session.application.applicationId=" + event.session.application.applicationId, "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID);
 
-    if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID) {
-        context.fail("Invalid Application ID");
-    }
+    // if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID) {
+    //     context.fail("Invalid Application ID");
+    // }
 
     if (event.session.new) {
       onSessionStarted({requestId: event.request.requestId}, event.session);
@@ -149,6 +149,7 @@ function processAnswer(answer, session, callback) {
 }
 
 function startGame(userId, callback) {
+  console.log(userId)
   questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', function (err, result) {
 
     var retVal = {
@@ -157,7 +158,7 @@ function startGame(userId, callback) {
       sayText: "Question 1. TODO",
       repromptText: "TODO",
       shouldEndSession: false
-    }
+    };
 
     return callback(err, retVal);
   });
@@ -165,7 +166,7 @@ function startGame(userId, callback) {
 
 function askNextQuestion(uri, answer, session, callback) {
   return callback(null, {});
-})
+}
 
 function getRank(userId, callback) {
   return callback(null, {});
@@ -177,9 +178,9 @@ function getScore(userId, callback) {
 
 // async.parallel({
 //   getEasy: function (cb) {
-//     questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', function (err, result) {
-//       return cb(err, result);
-//     });
+    // questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', function (err, result) {
+    //   return cb(err, result);
+    // });
 //   },
 //   getMedium: function (cb) {
 //     questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=medium', function (err, result) {
