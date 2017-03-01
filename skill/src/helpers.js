@@ -157,9 +157,6 @@ function handleSpeechQuerks(speech) {
 function buildNaturalLangList(items, finalWord) {
   var output = '';
   for (var i = 0; i < items.length; i++) {
-    if (items[i] == 'Close') items[i] = 'Nearly';
-    else if (items[i] == 'Right') items[i] = 'Yes';
-    else if (items[i] == 'Wrong') items[i] = 'No';
     if(i === 0) {
       output += items[i];
     } else if (i < items.length - 1) {
