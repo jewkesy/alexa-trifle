@@ -53,14 +53,14 @@ function onLaunch(launchRequest, session, callback) { // Called when the user la
 
 function onIntent(intentRequest, session, callback) { // Called when the user specifies an intent for this application.
   // console.log("onIntent requestId=" + intentRequest.requestId + ", sessionId=" + session.sessionId + ", intentName=" + intentRequest.intent.name);
-  // console.log('onIntent', intentRequest)
+  console.log('onIntent', intentRequest)
 
   var intent = intentRequest.intent, intentName = intentRequest.intent.name;
 
   var sessionAttributes = session.attributes;
 
   if (typeof sessionAttributes == 'undefined') return startGame(session.user.userId, callback);
-
+  // event.request.intent.slots.Answer.value
   switch(intentName) {
     case "StopIntent":
     case "CancelIntent":
@@ -70,9 +70,8 @@ function onIntent(intentRequest, session, callback) { // Called when the user sp
     case "PlayIntent":
       return startGame(session.user.userId, callback);
     case "TrueFalseIntent":
-      return processAnswer('TODO', session, callback);
     case "MultiChoiceIntent":
-      return processAnswer('TODO', session, callback);
+      return processAnswer(intent.slots.Answer.value, session, callback);
     case "RepeatIntent":
       return repeatQuestion(intentName, session, callback);
     case "RankIntent":
@@ -136,7 +135,7 @@ function processGameHelp(firstQuestion, session, callback) {
 }
 
 function processAnswer(answer, session, callback) {
-
+  console.log(answer);
   // this.event.request.intent.slots.Answer.value
 
   var sessionAttributes = session.attributes;
@@ -149,18 +148,22 @@ function processAnswer(answer, session, callback) {
 }
 
 function startGame(userId, callback) {
-  console.log(userId)
+  var sessionAttributes = {};
   questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', function (err, result) {
     console.log(err, result)
     var retVal = {
-      cardText: '\nQuestion 1. TODO',
+      cardText: '\nQuestion 1. ' + result.results[0].question,
       title: "New Game",
-      sayText: "Question 1. TODO",
+      sayText: "Question 1. " + result.results[0].question,
       repromptText: "TODO",
-      shouldEndSession: false
+      shouldEndSession: false,
+      correctAnswer: 'a',
+      questionType: result.results[0].type
     };
+    sessionAttributes.questionNum = 1;
+    return callback(sessionAttributes, skillHelper.buildSpeechletResponse(retVal.title, retVal.sayText, retVal.repromptText, retVal.shouldEndSession, retVal.cardText));
 
-    return callback(err, retVal);
+    // return callback(err, retVal);
   });
 }
 
