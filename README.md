@@ -28,6 +28,19 @@ Correctly answering 'Hard' gives you 6 points.
 
 Each correct answer is also a multiplier, so 3 correct answers will award you a maximum of 48 points.
 
+--or--
+
+Correctly answering 'Easy' gives you 1 points.
+Correctly answering 'Medium' gives you 2 points.
+Correctly answering 'Hard' gives you 3 points.
+
+Each correct answer awards 1 bonus point
+So 2 correct answers (eg Easy and Hard) will award you a score of 6 points
+So 3 correct answers will award you a maximum of 9 points.
+
+
 ## Ranking and Scores
 Alexa will keep your score and tell you your world ranking compared against other players.  
 The more games you play and the more questions you answer correctly, the greater chance to improve your rank.
+
+Considering having timed ranking, to encourage gameplay?

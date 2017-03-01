@@ -1,4 +1,4 @@
-"use strict"
+"use strict";
 
 var async = require('async');
 var questions = require('./questions.js');
@@ -136,6 +136,9 @@ function processGameHelp(firstQuestion, session, callback) {
 }
 
 function processAnswer(answer, session, callback) {
+
+  // this.event.request.intent.slots.Answer.value
+
   var sessionAttributes = session.attributes;
   sessionAttributes.intent = answer;
   if (sessionAttributes.questionNum == 1) sessionAttributes.type = answer;
@@ -145,37 +148,60 @@ function processAnswer(answer, session, callback) {
   return askNextQuestion(sessionAttributes.options[answer], answer, session, callback);
 }
 
+function startGame(userId, callback) {
+  questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', function (err, result) {
 
+    var retVal = {
+      cardText: '\nQuestion 1. TODO',
+      title: "New Game",
+      sayText: "Question 1. TODO",
+      repromptText: "TODO",
+      shouldEndSession: false
+    }
 
+    return callback(err, retVal);
+  });
+}
 
+function askNextQuestion(uri, answer, session, callback) {
+  return callback(null, {});
+})
 
-async.parallel({
-  getEasy: function (cb) {
-    questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', function (err, result) {
-      return cb(err, result);
-    });
-  },
-  getMedium: function (cb) {
-    questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=medium', function (err, result) {
-      return cb(err, result);
-    });
-  },
-  getHard: function (cb) {
-    questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=hard', function (err, result) {
-    return cb(err, result);
-    });
-  },
-  getCategories: function (cb) {
-    questions.getCategories(QUESTIONS_URI + 'api_category.php', function (err, result) {
-      return cb (err, result);
-    });
-  },
-  getSessionKey: function (cb) {
-    // Session keys help prevent repeat questions, but needs persisting.  Prob not possible through Alexa downtime
-    questions.getSessionKey(QUESTIONS_URI + 'api_token.php?command=request', function (err, result) {
-      cb(err, result);
-    });
-  }
-}, function(err, results) {
-  return console.log(err, JSON.stringify(results));
-});
+function getRank(userId, callback) {
+  return callback(null, {});
+}
+
+function getScore(userId, callback) {
+  return callback(null, {});
+}
+
+// async.parallel({
+//   getEasy: function (cb) {
+//     questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', function (err, result) {
+//       return cb(err, result);
+//     });
+//   },
+//   getMedium: function (cb) {
+//     questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=medium', function (err, result) {
+//       return cb(err, result);
+//     });
+//   },
+//   getHard: function (cb) {
+//     questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=hard', function (err, result) {
+//     return cb(err, result);
+//     });
+//   },
+//   getCategories: function (cb) {
+//     questions.getCategories(QUESTIONS_URI + 'api_category.php', function (err, result) {
+//       return cb (err, result);
+//     });
+//   },
+//   getSessionKey: function (cb) {
+//     // Session keys help prevent repeat questions, but needs persisting.  Prob not possible through Alexa downtime
+//     questions.getSessionKey(QUESTIONS_URI + 'api_token.php?command=request', function (err, result) {
+//       cb(err, result);
+//     });
+//   }
+// }, function(err, results) {
+//   return console.log(err, JSON.stringify(results));
+// });
