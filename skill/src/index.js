@@ -148,9 +148,12 @@ function processAnswer(answer, session, callback) {
 }
 
 function startGame(userId, callback) {
+  // TODO get userid from db
   var sessionAttributes = {};
   questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', function (err, result) {
     console.log(err, result)
+    //var question =
+    //opts = helpers.buildNaturalLangList(Object.keys(sessionAttributes.options), 'or');
     var retVal = {
       cardText: '\nQuestion 1. ' + result.results[0].question,
       title: "New Game",
@@ -162,8 +165,6 @@ function startGame(userId, callback) {
     };
     sessionAttributes.questionNum = 1;
     return callback(sessionAttributes, skillHelper.buildSpeechletResponse(retVal.title, retVal.sayText, retVal.repromptText, retVal.shouldEndSession, retVal.cardText));
-
-    // return callback(err, retVal);
   });
 }
 
