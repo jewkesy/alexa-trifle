@@ -2,6 +2,12 @@ StopIntent stop
 CancelIntent cancel
 HelpIntent help
 HelpIntent help me
+TrueIntent true
+FalseIntent false
+AIntent a
+BIntent b
+CIntent c
+DIntent d
 RankIntent what is my rank
 RankIntent what rank am i
 RankIntent what is my ranking

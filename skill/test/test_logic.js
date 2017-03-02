@@ -16,6 +16,15 @@ function getMultiChoiceQuestion(num) {
   });
 }
 
-getMultiChoiceQuestion(1);
+function getTrueFalseQuestion(num) {
+  // Handle multichoice question
+  var uri = QUESTIONS_URI + 'api.php?amount=1&type=boolean'
+  questions.getAlexaReadyQuestion(uri, num, function (err, result) {
+    console.log(err, result);
+  });
+}
+
+// getMultiChoiceQuestion(1);
 // getMultiChoiceQuestion(2);
 // getMultiChoiceQuestion(3);
+getTrueFalseQuestion(1);

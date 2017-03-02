@@ -51,7 +51,7 @@ function getAlexaReadyQuestion(uri, num, callback) {
       return callback('Unhandled question type: ' + result.results[0].type);
     }
 
-    console.log(alexa)
+    // console.log(alexa)
 
     var sessionAttributes = {
       questionNum: num,
@@ -63,13 +63,13 @@ function getAlexaReadyQuestion(uri, num, callback) {
     };
 
     // console.log(alexa, sessionAttributes)
-    var speechlet = skillHelper.buildSpeechletResponse(alexa.title, alexa.sayText, alexa.repromptText, alexa.shouldEndSession, alexa.cardText);
+    var speechlet = skillHelper.buildSpeechletResponse(alexa.title, alexa.sayText, alexa.repromptText, sessionAttributes.shouldEndSession, alexa.cardText);
     return callback(null, sessionAttributes, speechlet);
   });
 }
 
 function buildTrueFalseQuestion(result, difficulty, speechPrefix, num) {
-  var q = helpers.handleSpeechQuerks(result.question);
+  var q = "True or False. " + helpers.handleSpeechQuerks(result.question);
   var cardText =
     "Category: "   +  result.category + "\n" +
     "Difficulty: " +  difficulty  +  "\n" + q;
@@ -77,12 +77,12 @@ function buildTrueFalseQuestion(result, difficulty, speechPrefix, num) {
   var alexa = {
     cardText: cardText,
     title: "Question " + num,
-    sayText: speechPrefix + question,
-    repromptText: question + '. Answer by saying true or false',
-    questionText: question,
-    correct: correctLetter
+    sayText: speechPrefix + q,
+    repromptText: q + '. Answer by saying true or false',
+    question: q,
+    correct: result.correct_answer
   };
-
+// console.log(alexa)
   return alexa;
 }
 
@@ -145,7 +145,7 @@ function getCategories(uri, callback) {
 }
 
 function getQuestions(uri, callback) {
-  console.log(uri)
+  // console.log(uri)
   request.get({
     headers: {'content-type':'application/json'},
     url:     uri

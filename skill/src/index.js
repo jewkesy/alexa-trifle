@@ -11,6 +11,7 @@ var ALEXA_APP_ID =  process.env.ALEXA_APP_ID   || process.argv[3];
 
 exports.handler = function (event, context) {
   try {
+    console.log(event.request);
     // console.log("event.session.application.applicationId=" + event.session.application.applicationId, "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID);
 
     // if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID) {
@@ -69,8 +70,12 @@ function onIntent(intentRequest, session, callback) { // Called when the user sp
       return processGameHelp(false, session, callback);
     case "PlayIntent":
       return startGame(session.user.userId, callback);
-    case "TrueFalseIntent":
-    case "MultiChoiceIntent":
+    case "TrueIntent":
+    case "FalseIntent":
+    case "AIntent":
+    case "BIntent":
+    case "CIntent":
+    case "DIntent":
       return processAnswer(intent.slots.Answer.value, session, callback);
     case "RepeatIntent":
       return repeatQuestion(intentName, session, callback);
@@ -180,34 +185,3 @@ function getRank(userId, callback) {
 function getScore(userId, callback) {
   return callback(null, {});
 }
-
-// async.parallel({
-//   getEasy: function (cb) {
-    // questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', function (err, result) {
-    //   return cb(err, result);
-    // });
-//   },
-//   getMedium: function (cb) {
-//     questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=medium', function (err, result) {
-//       return cb(err, result);
-//     });
-//   },
-//   getHard: function (cb) {
-//     questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=hard', function (err, result) {
-//     return cb(err, result);
-//     });
-//   },
-//   getCategories: function (cb) {
-//     questions.getCategories(QUESTIONS_URI + 'api_category.php', function (err, result) {
-//       return cb (err, result);
-//     });
-//   },
-//   getSessionKey: function (cb) {
-//     // Session keys help prevent repeat questions, but needs persisting.  Prob not possible through Alexa downtime
-//     questions.getSessionKey(QUESTIONS_URI + 'api_token.php?command=request', function (err, result) {
-//       cb(err, result);
-//     });
-//   }
-// }, function(err, results) {
-//   return console.log(err, JSON.stringify(results));
-// });
