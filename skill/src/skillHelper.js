@@ -39,7 +39,7 @@ function buildSpeechletResponse(title, output, repromptText, shouldEndSession, c
 }
 
 function buildResponse(sessionAttributes, speechletResponse) {
-  console.log('buildReponse', speechletResponse);
+  // console.log('buildReponse', speechletResponse);
   return {
     version: "1.0",
     sessionAttributes: sessionAttributes,
