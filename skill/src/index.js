@@ -149,22 +149,23 @@ function processAnswer(answer, session, callback) {
 
 function startGame(userId, callback) {
   // TODO get userid from db
-  var sessionAttributes = {};
-  questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', function (err, result) {
-    console.log(err, result)
+  // var sessionAttributes = {};
+  questions.getAlexaReadyQuestion(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', 1, function (err, sessionAttributes, speechlet) {
+    console.log(err, sessionAttributes, speechlet)
+    return callback(sessionAttributes, speechlet);
     //var question =
     //opts = helpers.buildNaturalLangList(Object.keys(sessionAttributes.options), 'or');
-    var retVal = {
-      cardText: '\nQuestion 1. ' + result.results[0].question,
-      title: "New Game",
-      sayText: "Question 1. " + result.results[0].question,
-      repromptText: "TODO",
-      shouldEndSession: false,
-      correctAnswer: 'a',
-      questionType: result.results[0].type
-    };
-    sessionAttributes.questionNum = 1;
-    return callback(sessionAttributes, skillHelper.buildSpeechletResponse(retVal.title, retVal.sayText, retVal.repromptText, retVal.shouldEndSession, retVal.cardText));
+    // var retVal = {
+    //   cardText: '\nQuestion 1. ' + result.results[0].question,
+    //   title: "New Game",
+    //   sayText: "Question 1. " + result.results[0].question,
+    //   repromptText: "TODO",
+    //   shouldEndSession: false,
+    //   correctAnswer: 'a',
+    //   questionType: result.results[0].type
+    // };
+    // sessionAttributes.questionNum = 1;
+    // return callback(sessionAttributes, skillHelper.buildSpeechletResponse(retVal.title, retVal.sayText, retVal.repromptText, retVal.shouldEndSession, retVal.cardText));
   });
 }
 

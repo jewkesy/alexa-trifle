@@ -63,7 +63,8 @@ function getAlexaReadyQuestion(uri, num, callback) {
     };
 
     // console.log(alexa, sessionAttributes)
-    return callback(sessionAttributes, skillHelper.buildSpeechletResponse(alexa.title, alexa.sayText, alexa.repromptText, alexa.shouldEndSession, alexa.cardText));
+    var speechlet = skillHelper.buildSpeechletResponse(alexa.title, alexa.sayText, alexa.repromptText, alexa.shouldEndSession, alexa.cardText);
+    return callback(null, sessionAttributes, speechlet);
   });
 }
 
