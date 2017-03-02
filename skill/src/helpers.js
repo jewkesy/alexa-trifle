@@ -6,7 +6,7 @@ const winPhrases  = ["Yay", "Woo hoo", "That was easy", "Good choice", "Better l
 const losePhrases = ["You got me", "Couldn't get that one", "Good choice", "That was tough", "Well done", "You beat me", "That was tricky", "Whatevas", "Fine", "Gutted", "Fair play", "Doh", "Booo", "Nice one", "If I had hands, I'd clap"];
 const startGamePhrases = ["I love this game", "Lets play", "Lets go", "Ok", "Lets do this"];
 const farewellPhrases = ["Please visit www.daryljewkes.com to see live game statistics from the Alexa community", "Please visit www.daryljewkes.com to see the highest scores"];
-const querks = [];
+const querks = [" what?"];
 
 module.exports = {
 	getStartGamePhrase: function (playr, greetingIdx, bePolite) {
@@ -38,6 +38,9 @@ module.exports = {
   },
 	randomInt: function (low, high) {
 		return randomInt(low, high);
+	},
+	shuffle: function (arr) {
+		return shuffle(arr);
 	}
 }
 
@@ -193,4 +196,23 @@ function numberWithCommas(x) {
 
 function daydiff(first, second) {
   return Math.round((second-first)/(1000*60*60*24));
+}
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
 }

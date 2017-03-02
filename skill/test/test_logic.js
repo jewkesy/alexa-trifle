@@ -8,78 +8,84 @@ var helpers = require('../src/helpers.js');
 
 var QUESTIONS_URI = process.env.QUESTIONS_URI || process.argv[2];
 
-// Handle multichoice question
-questions.getQuestions(QUESTIONS_URI + 'api.php?amount=1&type=multiple', function (err, result) {
-  console.log(result.results[0].question, result.results[0].correct_answer)
-  // 1. Merge correct answer with options
-  var opts = result.results[0].incorrect_answers;
-  opts.push(result.results[0].correct_answer)
 
-  console.log(opts)
-  // 2. Shuffle
-  shuffle(opts)
-  console.log(opts);
+function getMultiChoiceQuestion(num) {
+  // Handle multichoice question
 
-  // 3. Get idx of correct, map to a, b, c or d.
-  var idx = opts.indexOf(result.results[0].correct_answer);
-
-  var correct;
-  if (idx == 0) {
-    correct = 'a';
-  } else if (idx == 1) {
-    correct = 'b';
-  } else if (idx == 2) {
-    correct = 'c';
-  } else if (idx == 3) {
-    correct = 'd';
+  var uri = QUESTIONS_URI + 'api.php?amount=1&type=multiple'
+  var speechPrefix = '';
+  if (num == 1) {
+    speechPrefix = 'First question for 1 point. ';
+    uri += '&difficulty=easy';
   }
-  console.log(correct);
-  opts[0] = 'A) ' + opts[0];
-  opts[1] = 'B) ' + opts[1];
-  opts[2] = 'C) ' + opts[2];
-  opts[3] = 'D) ' + opts[3];
-
-  // 4. Build natural langauge quesiton
-  var question = result.results[0].question + ' Is it ' + helpers.buildNaturalLangList(opts, 'or');
-  console.log(question);
-  //var question =
-  //opts = helpers.buildNaturalLangList(Object.keys(sessionAttributes.options), 'or');
-  var alexa = {
-    cardText: '\nQuestion 1. ' + result.results[0].question,
-    title: "New Game",
-    sayText: "Question 1. " + result.results[0].question,
-    repromptText: "TODO",
-  };
-
-  var sessionAttributes = {
-    questionNum: 1,
-    questionText: 'TODO',
-    correctAnswer: 'TODO',
-    questionType: result.results[0].type,
-    shouldEndSession: false,
-  };
-  sessionAttributes.questionNum = 1;
-
-  // console.log(alexa, sessionAttributes)
-  // return callback(sessionAttributes, skillHelper.buildSpeechletResponse(retVal.title, retVal.sayText, retVal.repromptText, retVal.shouldEndSession, retVal.cardText));
-});
-
-
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
+  else if (num == 2) {
+    speechPrefix = 'Second question for 2 points. ';
+    uri += '&difficulty=medium';
+  }
+  else if (num == 3) {
+    speechPrefix = 'Final question for 3 points. ';
+    uri += '&difficulty=hard';
   }
 
-  return array;
+  questions.getQuestions(uri, function (err, result) {
+    console.log(result.results[0].question, result.results[0].correct_answer)
+    var q = helpers.handleSpeechQuerks(result.results[0].question);
+
+    // 1. Merge correct answer with options
+    var opts = result.results[0].incorrect_answers;
+    opts.push(result.results[0].correct_answer)
+
+    // console.log(opts)
+    // 2. Shuffle
+    helpers.shuffle(opts)
+    // console.log(opts);
+
+    // 3. Get idx of correct, map to a, b, c or d.
+    var idx = opts.indexOf(result.results[0].correct_answer);
+
+    var correctLetter;
+    if (idx == 0) {
+      correctLetter = 'a';
+    } else if (idx == 1) {
+      correctLetter = 'b';
+    } else if (idx == 2) {
+      correctLetter = 'c';
+    } else if (idx == 3) {
+      correctLetter = 'd';
+    }
+    console.log(correctLetter);
+    opts[0] = 'a) ' + opts[0];
+    opts[1] = 'b) ' + opts[1];
+    opts[2] = 'c) ' + opts[2];
+    opts[3] = 'd) ' + opts[3];
+
+    // 4. Build natural langauge quesiton
+    var question = q + '\n Is it ' + helpers.buildNaturalLangList(opts, 'or');
+
+    var alexa = {
+      cardText: 'TODO: Format question',
+      title: "New Game",
+      sayText: speechPrefix + question,
+      repromptText: question + '. Answer by saying a b c or d',
+    };
+
+    console.log(alexa);
+
+    var sessionAttributes = {
+      questionNum: num,
+      questionText: question,
+      correctLetter: correctLetter,
+      correctAnswer: result.results[0].correct_answer,
+      questionType: result.results[0].type,
+      shouldEndSession: false,
+    };
+    sessionAttributes.questionNum = num;
+
+    // console.log(alexa, sessionAttributes)
+    // return callback(sessionAttributes, skillHelper.buildSpeechletResponse(retVal.title, retVal.sayText, retVal.repromptText, retVal.shouldEndSession, retVal.cardText));
+  });
 }
+
+getMultiChoiceQuestion(1);
+getMultiChoiceQuestion(2);
+getMultiChoiceQuestion(3);
