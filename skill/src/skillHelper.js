@@ -25,7 +25,7 @@ function buildSpeechletResponse(title, output, repromptText, shouldEndSession, c
     },
     card: {
       type: cardType,
-      title: "Trifle - " + title,
+      title: title,
       content: cardText
     },
     reprompt: {
