@@ -11,7 +11,7 @@ var ALEXA_APP_ID =  process.env.ALEXA_APP_ID    || process.argv[3];
 
 exports.handler = function (event, context) {
   try {
-    console.log(event.request);
+    // console.log(event.request);
     // console.log("event.session.application.applicationId=" + event.session.application.applicationId, "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID);
 
     // if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID) {
@@ -54,7 +54,7 @@ function onLaunch(launchRequest, session, callback) { // Called when the user la
 
 function onIntent(intentRequest, session, callback) { // Called when the user specifies an intent for this application.
   // console.log("onIntent requestId=" + intentRequest.requestId + ", sessionId=" + session.sessionId + ", intentName=" + intentRequest.intent.name);
-  console.log('onIntent', intentRequest)
+  // console.log('onIntent', intentRequest)
 
   var intent = intentRequest.intent, intentName = intentRequest.intent.name;
 
@@ -140,7 +140,7 @@ function processGameHelp(firstQuestion, session, callback) {
 }
 
 function processAnswer(input, session, callback) {
-  console.log(input, session);
+  // console.log(input, session);
 
   var answer;
   switch (input) {
@@ -169,17 +169,15 @@ function processAnswer(input, session, callback) {
   var sessionAttributes = session.attributes;
 
   var prefix;
-  console.log(answer, sessionAttributes.correct);
   if (answer == sessionAttributes.correct) {
-    console.log(sessionAttributes.currentScore)
     sessionAttributes.currentScore += sessionAttributes.questionNum;
-    console.log(sessionAttributes.currentScore)
     sessionAttributes.correctCount++;
     prefix = 'Correct. ';
   } else {
     prefix = 'Incorrect. ';
   }
 
+  // set up for next question
   var difficulty;
   if (sessionAttributes.difficulty == 'easy') difficulty = 'medium';
   else if (sessionAttributes.difficulty == 'medium') difficulty = 'hard';
@@ -192,7 +190,7 @@ function processAnswer(input, session, callback) {
 }
 
 function startGame(userId, callback) {
-  console.log("TODO get user from db");
+  // console.log("TODO get user from db");
   var sessionAttributes = {
     questionNum: 1,
     currentScore: 0,
@@ -200,21 +198,15 @@ function startGame(userId, callback) {
     shouldEndSession: false
   };
 
-  // questions.getAlexaReadyQuestion("", QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', 1, function (err, sessionAttributes, speechlet) {
-  //   console.log(err, sessionAttributes, speechlet)
-  //   return callback(sessionAttributes, speechlet);
-  //   });
-  //
-  askQuestion("Get Welcome Words. ", sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
+  askQuestion("Hello. ", sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
     return callback(sessionAttributes, speechlet);
   });
-
 }
 
 function askQuestion(prefix, sessionAttributes, uri, num, callback) {
-  console.log(prefix, uri, num)
+  // console.log(prefix, uri, num)
   questions.getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, function (err, sessionAttributes, speechlet) {
-    console.log(err, sessionAttributes, speechlet)
+    // console.log(err, sessionAttributes, speechlet)
     return callback(err, sessionAttributes, speechlet);
   });
 }
