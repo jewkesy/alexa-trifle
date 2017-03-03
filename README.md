@@ -1,3 +1,6 @@
+![Alt text](./icons/trifle_s.png?raw=false)
+
+
 # alexa-trifle
 An Alexa Skill trivia game that tests your knowledge against the Alexa community.
 
