@@ -6,8 +6,8 @@ var helpers = require('./helpers.js');
 var skillHelper = require('./skillHelper.js');
 
 module.exports = {
-  getAlexaReadyQuestion: function (uri, num, callback) {
-    return getAlexaReadyQuestion(uri, num, callback);
+  getAlexaReadyQuestion: function (sessionAttributes, uri, num, callback) {
+    return getAlexaReadyQuestion(sessionAttributes, uri, num, callback);
   },
   getCategories: function (uri, callback) {
     return getCategories(uri, callback);
@@ -20,9 +20,10 @@ module.exports = {
   }
 }
 
-function getAlexaReadyQuestion(uri, num, callback) {
+function getAlexaReadyQuestion(sessionAttributes, uri, num, callback) {
   var speechPrefix = '';
   var difficulty = '';
+
   if (num == 1) {
     speechPrefix = 'First question for 1 point. ';
     uri += '&difficulty=easy';
@@ -52,18 +53,13 @@ function getAlexaReadyQuestion(uri, num, callback) {
     }
 
     // console.log(alexa)
-
-    var sessionAttributes = {
-      questionNum: num,
-      questionText: alexa.question,
-      correctLetter: alexa.correctLetter,
-      correctAnswer: result.results[0].correct_answer,
-      questionType: result.results[0].type,
-      shouldEndSession: false,
-    };
+    sessionAttributes.questionText = alexa.question;
+    sessionAttributes.correctLetter = alexa.correctLetter;
+    sessionAttributes.correctAnswer = result.results[0].correct_answer;
+    sessionAttributes.questionType = result.results[0].type;
 
     // console.log(alexa, sessionAttributes)
-    var speechlet = skillHelper.buildSpeechletResponse(alexa.title, alexa.sayText, alexa.repromptText, sessionAttributes.shouldEndSession, alexa.cardText);
+    var speechlet = skillHelper.buildSpeechletResponse(alexa.title, alexa.sayText, alexa.repromptText, false, alexa.cardText);
     return callback(null, sessionAttributes, speechlet);
   });
 }
@@ -80,7 +76,7 @@ function buildTrueFalseQuestion(result, difficulty, speechPrefix, num) {
     sayText: speechPrefix + q,
     repromptText: q + '. Answer by saying true or false',
     question: q,
-    correct: result.correct_answer
+    correct: result.correct_answer.toLowerCase()
   };
 // console.log(alexa)
   return alexa;
@@ -129,7 +125,7 @@ function buildMultiChoiceQuestion(result, difficulty, speechPrefix, num) {
     sayText: speechPrefix + question,
     repromptText: question + '. Answer by saying a ,b, c or d',
     questionText: question,
-    correctLetter: correctLetter,
+    correct: correctLetter,
     answer: result.correct_answer
   };
 

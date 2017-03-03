@@ -139,22 +139,60 @@ function processGameHelp(firstQuestion, session, callback) {
   callback(sessionAttributes, skillHelper.buildSpeechletResponse("Help", text, sessionAttributes.questionText, false));
 }
 
-function processAnswer(answer, session, callback) {
+function processAnswer(input, session, callback) {
   console.log(answer, session);
-  // this.event.request.intent.slots.Answer.value
+
+  var answer;
+  switch (input) {
+    case "AIntent":
+      answer = 'a';
+      break;
+    case "BIntent":
+      answer = 'b';
+      break;
+    case "CIntent":
+      answer = 'c';
+      break;
+    case "DIntent":
+      answer = 'd';
+      break;
+    case "TrueIntent":
+      answer = 'true';
+      break;
+    case "FalseIntent":
+      answer = 'false';
+      break;
+    default:
+      return invalidAnswer(answer, session, callback);
+  }
 
   var sessionAttributes = session.attributes;
-  sessionAttributes.intent = answer;
-  if (sessionAttributes.questionNum == 1) sessionAttributes.type = answer;
 
-  if (sessionAttributes.options[answer] === undefined) return invalidAnswer(answer, session, callback);
+  if (answer == input.correct) {
+    sessionAttributes.currentScore += sessionAttributes.questionNum;
+    sessionAttributes.correctCounter++;
+    console.log('TODO add score')
+  } else {
+    console.log('TODO leave score')
+  }
+
+  // sessionAttributes.intent = answer;
+  // if (sessionAttributes.questionNum == 1) sessionAttributes.type = answer;
+  //
+  // if (sessionAttributes.options[answer] === undefined) return invalidAnswer(answer, session, callback);
 
   return askNextQuestion(sessionAttributes.options[answer], answer, session, callback);
 }
 
 function startGame(userId, callback) {
   // TODO get userid from db
-  questions.getAlexaReadyQuestion(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', 1, function (err, sessionAttributes, speechlet) {
+  var sessionAttributes = {
+    currentScore: 0,
+    correctCounter: 0,
+    shouldEndSession: false
+  };
+
+  questions.getAlexaReadyQuestion(sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', 1, function (err, sessionAttributes, speechlet) {
     console.log(err, sessionAttributes, speechlet)
     return callback(sessionAttributes, speechlet);
     });
