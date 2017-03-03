@@ -45,15 +45,16 @@ function getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, callback) {
 
     var alexa;
     if (result.results[0].type == 'multiple') {
-      alexa = buildMultiChoiceQuestion(result.results[0], difficulty, speechPrefix, num);
+      alexa = buildMultiChoiceQuestion(result.results[0], difficulty, prefix + speechPrefix, num);
     } else if (result.results[0].type == 'boolean') {
-      alexa = buildTrueFalseQuestion(result.results[0], difficulty, speechPrefix, num);
+      alexa = buildTrueFalseQuestion(result.results[0], difficulty, prefix + speechPrefix, num);
     } else {
       return callback('Unhandled question type: ' + result.results[0].type);
     }
 
     // console.log(alexa)
-    sessionAttributes.currentNum = num;
+    sessionAttributes.correct = alexa.correct;
+    sessionAttributes.questionNum = num;
     sessionAttributes.difficulty = difficulty;
     sessionAttributes.questionText = alexa.question;
     sessionAttributes.correctLetter = alexa.correctLetter;
@@ -126,7 +127,7 @@ function buildMultiChoiceQuestion(result, difficulty, speechPrefix, num) {
     title: "Question " + num,
     sayText: speechPrefix + question,
     repromptText: question + '. Answer by saying a ,b, c or d',
-    questionText: question,
+    questionText: q,
     correct: correctLetter,
     answer: result.correct_answer
   };

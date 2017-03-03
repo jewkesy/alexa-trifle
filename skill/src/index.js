@@ -169,9 +169,12 @@ function processAnswer(input, session, callback) {
   var sessionAttributes = session.attributes;
 
   var prefix;
-  if (answer == input.correct) {
+  console.log(answer, sessionAttributes.correct);
+  if (answer == sessionAttributes.correct) {
+    console.log(sessionAttributes.currentScore)
     sessionAttributes.currentScore += sessionAttributes.questionNum;
-    sessionAttributes.correctCounter++;
+    console.log(sessionAttributes.currentScore)
+    sessionAttributes.correctCount++;
     prefix = 'Correct. ';
   } else {
     prefix = 'Incorrect. ';
@@ -181,9 +184,9 @@ function processAnswer(input, session, callback) {
   if (sessionAttributes.difficulty == 'easy') difficulty = 'medium';
   else if (sessionAttributes.difficulty == 'medium') difficulty = 'hard';
 
-  sessionAttributes.currentNum++;
+  sessionAttributes.questionNum++;
 
-  askQuestion(prefix, sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=' + difficulty, sessionAttributes.currentNum, function(err, sessionAttributes, speechlet) {
+  askQuestion(prefix, sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=' + difficulty, sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
     return callback(sessionAttributes, speechlet);
   });
 }
@@ -191,8 +194,9 @@ function processAnswer(input, session, callback) {
 function startGame(userId, callback) {
   console.log("TODO get user from db");
   var sessionAttributes = {
+    questionNum: 1,
     currentScore: 0,
-    correctCounter: 0,
+    correctCount: 0,
     shouldEndSession: false
   };
 
@@ -201,7 +205,7 @@ function startGame(userId, callback) {
   //   return callback(sessionAttributes, speechlet);
   //   });
   //
-  askQuestion("Get Welcome Words", sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', 1, function(err, sessionAttributes, speechlet) {
+  askQuestion("Get Welcome Words. ", sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
     return callback(sessionAttributes, speechlet);
   });
 
