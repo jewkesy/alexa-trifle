@@ -63,6 +63,7 @@ function getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, callback) {
 
     // console.log(alexa, sessionAttributes)
     var speechlet = skillHelper.buildSpeechletResponse(alexa.title, alexa.sayText, alexa.repromptText, false, alexa.cardText);
+    console.log(speechlet)
     return callback(null, sessionAttributes, speechlet);
   });
 }
@@ -126,8 +127,8 @@ function buildMultiChoiceQuestion(result, difficulty, speechPrefix, num) {
     cardText: cardText,
     title: "Question " + num,
     sayText: speechPrefix + question,
-    repromptText: question + '. Answer by saying a ,b, c or d',
-    questionText: q,
+    repromptText: q + '. Answer by saying a, b, c or d',
+    questionText: question,
     correct: correctLetter,
     answer: result.correct_answer
   };

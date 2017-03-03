@@ -31,7 +31,8 @@ function buildSpeechletResponse(title, output, repromptText, shouldEndSession, c
     reprompt: {
       outputSpeech: {
         type: "SSML", // PlainText or SSML
-        text: repromptText
+        ssml: "<speak>" + repromptText + "</speak>"
+				//  text: repromptText
       }
     },
     shouldEndSession: shouldEndSession

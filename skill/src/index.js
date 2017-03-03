@@ -177,6 +177,11 @@ function processAnswer(input, session, callback) {
     prefix = 'Incorrect. ';
   }
 
+  if (sessionAttributes.questionNum == 3) {
+    console.log('TODO: build game summary');
+    return callback();
+  }
+
   // set up for next question
   var difficulty;
   if (sessionAttributes.difficulty == 'easy') difficulty = 'medium';
@@ -204,9 +209,7 @@ function startGame(userId, callback) {
 }
 
 function askQuestion(prefix, sessionAttributes, uri, num, callback) {
-  // console.log(prefix, uri, num)
   questions.getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, function (err, sessionAttributes, speechlet) {
-    // console.log(err, sessionAttributes, speechlet)
     return callback(err, sessionAttributes, speechlet);
   });
 }
