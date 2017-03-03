@@ -1,6 +1,11 @@
 # alexa-trifle
 Alexa Skill trivia game
 
+Three questions. Three difficulties. You versus the world!
+
+Test your knowledge skills against the Alexa community.
+
+
 ## Intention
 Alexa, play Trifle
 Alexa, ask Trifle what my score is
@@ -40,7 +45,9 @@ So 3 correct answers will award you a maximum of 9 points.
 
 
 ## Ranking and Scores
-Alexa will keep your score and tell you your world ranking compared against other players.  
-The more games you play and the more questions you answer correctly, the greater chance to improve your rank.
+Alexa will keep your score and tell you your world ranking compared against other Alexa players.  
+The more games you play and the more questions you answer correctly, the greater chance to increase your world rank.
 
-Considering having timed ranking, to encourage gameplay?
+
+## Gameplay Considerations
+Having timed ranking, to encourage gameplay? i.e weekly as well as all time?

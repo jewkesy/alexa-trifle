@@ -129,7 +129,8 @@ function buildMultiChoiceQuestion(result, difficulty, speechPrefix, num) {
     sayText: speechPrefix + question,
     repromptText: question + '. Answer by saying a ,b, c or d',
     questionText: question,
-    correct: correctLetter
+    correctLetter: correctLetter,
+    answer: result.correct_answer
   };
 
   return alexa;

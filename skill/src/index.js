@@ -76,7 +76,7 @@ function onIntent(intentRequest, session, callback) { // Called when the user sp
     case "BIntent":
     case "CIntent":
     case "DIntent":
-      return processAnswer(intent.slots.Answer.value, session, callback);
+      return processAnswer(intentName, session, callback);
     case "RepeatIntent":
       return repeatQuestion(intentName, session, callback);
     case "RankIntent":
@@ -140,7 +140,7 @@ function processGameHelp(firstQuestion, session, callback) {
 }
 
 function processAnswer(answer, session, callback) {
-  console.log(answer);
+  console.log(answer, session);
   // this.event.request.intent.slots.Answer.value
 
   var sessionAttributes = session.attributes;
@@ -154,24 +154,10 @@ function processAnswer(answer, session, callback) {
 
 function startGame(userId, callback) {
   // TODO get userid from db
-  // var sessionAttributes = {};
   questions.getAlexaReadyQuestion(QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', 1, function (err, sessionAttributes, speechlet) {
     console.log(err, sessionAttributes, speechlet)
     return callback(sessionAttributes, speechlet);
-    //var question =
-    //opts = helpers.buildNaturalLangList(Object.keys(sessionAttributes.options), 'or');
-    // var retVal = {
-    //   cardText: '\nQuestion 1. ' + result.results[0].question,
-    //   title: "New Game",
-    //   sayText: "Question 1. " + result.results[0].question,
-    //   repromptText: "TODO",
-    //   shouldEndSession: false,
-    //   correctAnswer: 'a',
-    //   questionType: result.results[0].type
-    // };
-    // sessionAttributes.questionNum = 1;
-    // return callback(sessionAttributes, skillHelper.buildSpeechletResponse(retVal.title, retVal.sayText, retVal.repromptText, retVal.shouldEndSession, retVal.cardText));
-  });
+    });
 }
 
 function askNextQuestion(uri, answer, session, callback) {
