@@ -6,8 +6,8 @@ var helpers = require('./helpers.js');
 var skillHelper = require('./skillHelper.js');
 
 module.exports = {
-  getAlexaReadyQuestion: function (sessionAttributes, uri, num, callback) {
-    return getAlexaReadyQuestion(sessionAttributes, uri, num, callback);
+  getAlexaReadyQuestion: function (prefix, sessionAttributes, uri, num, callback) {
+    return getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, callback);
   },
   getCategories: function (uri, callback) {
     return getCategories(uri, callback);
@@ -20,7 +20,7 @@ module.exports = {
   }
 }
 
-function getAlexaReadyQuestion(sessionAttributes, uri, num, callback) {
+function getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, callback) {
   var speechPrefix = '';
   var difficulty = '';
 
@@ -32,7 +32,7 @@ function getAlexaReadyQuestion(sessionAttributes, uri, num, callback) {
   else if (num == 2) {
     speechPrefix = 'Second question for 2 points. ';
     uri += '&difficulty=medium';
-    difficulty = 'tricky';
+    difficulty = 'medium';
   }
   else if (num == 3) {
     speechPrefix = 'Final question for 3 points. ';
@@ -53,12 +53,14 @@ function getAlexaReadyQuestion(sessionAttributes, uri, num, callback) {
     }
 
     // console.log(alexa)
+    sessionAttributes.currentNum = num;
+    sessionAttributes.difficulty = difficulty;
     sessionAttributes.questionText = alexa.question;
     sessionAttributes.correctLetter = alexa.correctLetter;
     sessionAttributes.correctAnswer = result.results[0].correct_answer;
     sessionAttributes.questionType = result.results[0].type;
 
-    // console.log(alexa, sessionAttributes)
+    console.log(alexa, sessionAttributes)
     var speechlet = skillHelper.buildSpeechletResponse(alexa.title, alexa.sayText, alexa.repromptText, false, alexa.cardText);
     return callback(null, sessionAttributes, speechlet);
   });
