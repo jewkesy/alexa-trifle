@@ -63,7 +63,7 @@ function getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, callback) {
 
     // console.log(alexa, sessionAttributes)
     var speechlet = skillHelper.buildSpeechletResponse(alexa.title, alexa.sayText, alexa.repromptText, false, alexa.cardText);
-    console.log(speechlet)
+    // console.log(speechlet)
     return callback(null, sessionAttributes, speechlet);
   });
 }

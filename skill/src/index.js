@@ -96,6 +96,7 @@ function stop(intent, session, callback) {
 
 function repeatQuestion(intent, session, callback) {
   var sessionAttributes = session.attributes;
+  console.log('TODO Handle true or false or a, b, c or d response');
   callback(sessionAttributes,
     skillHelper.buildSpeechletResponse("Question " + sessionAttributes.questionNum, sessionAttributes.questionText,
       sessionAttributes.questionText + "\nTODO Handle true or false or a, b, c or d response",  false));
