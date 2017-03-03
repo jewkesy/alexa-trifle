@@ -1,4 +1,4 @@
-![Alt text](./icons/trifle_s.png?raw=false)
+![Alt text](./skill/icons/trifle_s.png?raw=false)
 
 
 # alexa-trifle
