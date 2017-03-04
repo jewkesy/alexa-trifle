@@ -128,7 +128,7 @@ function buildMultiChoiceQuestion(result, difficulty, speechPrefix, num) {
     cardText: cardText,
     title: "Question " + num,
     sayText: speechPrefix + question,
-    repromptText: q + '. Answer by saying a, b, c or d',
+    repromptText: question,
     questionText: question,
     correct: correctLetter,
     answer: result.correct_answer
