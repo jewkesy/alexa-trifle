@@ -113,8 +113,8 @@ function invalidAnswer(intent, session, callback) {
   console.log(intent);
   var sessionAttributes = session.attributes;
   sessionAttributes.intent = intent;
-  var optionlist = helpers.buildNaturalLangList(Object.keys(sessionAttributes.options), 'or');
-
+  var optionlist = helpers.buildNaturalLangList(Object(sessionAttributes.options), 'or');
+  console.log(optionlist)
   var questiontext = "Sorry, that was not a valid answer.\n";
 
   if(sessionAttributes.questionNum.toString() == '1') {
@@ -122,7 +122,7 @@ function invalidAnswer(intent, session, callback) {
   } else {
     questiontext += "Please try again or ask for help.\n" + sessionAttributes.questionText;
   }
-
+console.log(questiontext)
   callback(sessionAttributes, skillHelper.buildSpeechletResponse("Invalid Answer", questiontext, sessionAttributes.questionText, false));
 }
 
@@ -131,7 +131,7 @@ function processGameHelp(firstQuestion, session, callback) {
   sessionAttributes.intent = 'HelpIntent';
   var text = "TODO Answer three questions that steadily get more difficult.  Points increase for each correct answer.\n";
 
-  var opts = helpers.buildNaturalLangList(Object.keys(sessionAttributes.options), 'or');
+  var opts = helpers.buildNaturalLangList(Object(sessionAttributes.options), 'or');
 
   if (firstQuestion) {
     text += "You can say " + opts + '.\n' + sessionAttributes.questionText;
@@ -143,33 +143,42 @@ function processGameHelp(firstQuestion, session, callback) {
 }
 
 function processAnswer(input, session, callback) {
-  // console.log(input, session);
-
-  var answer;
-  switch (input) {
-    case "AIntent":
-      answer = 'a';
-      break;
-    case "BIntent":
-      answer = 'b';
-      break;
-    case "CIntent":
-      answer = 'c';
-      break;
-    case "DIntent":
-      answer = 'd';
-      break;
-    case "TrueIntent":
-      answer = 'true';
-      break;
-    case "FalseIntent":
-      answer = 'false';
-      break;
-    default:
-      return invalidAnswer(input, session, callback);
-  }
-
+  console.log(input, session);
   var sessionAttributes = session.attributes;
+  var answer;
+
+  // check type of question matches answer type
+  if (sessionAttributes.questionType == 'multiple') {
+    switch (input) {
+      case "AIntent":
+        answer = 'a';
+        break;
+      case "BIntent":
+        answer = 'b';
+        break;
+      case "CIntent":
+        answer = 'c';
+        break;
+      case "DIntent":
+        answer = 'd';
+        break;
+      default:
+        return invalidAnswer(input, session, callback);
+    }
+  } else if (sessionAttributes.questionType == 'boolean') {
+    switch (input) {
+      case "TrueIntent":
+        answer = 'true';
+        break;
+      case "FalseIntent":
+        answer = 'false';
+        break;
+      default:
+        return invalidAnswer(input, session, callback);
+    }
+  } else {
+    return invalidAnswer(input, session, callback);
+  }
 
   var prefix;
 
@@ -185,7 +194,7 @@ function processAnswer(input, session, callback) {
     console.log('TODO Set attribs for completed game')
 
     getSummary(prefix + '. ', sessionAttributes, function (err, sessionAttributes, speechlet) {
-      return callback(err, sessionAttributes, speechlet);
+      return callback(sessionAttributes, speechlet);
     });
 
   } else {
