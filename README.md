@@ -8,7 +8,7 @@ An Alexa Skill trivia game that tests your knowledge against the Alexa community
 Three questions. Three difficulties. You versus the world!
 
 ## Full Skill Description
-You will be asked three questions from a random selection of categories with increasing difficulty.
+You will be asked three questions from a random selection of categories with increasing difficulty, but increasing score.
 
 Questions are answered either by "true" or "false", or multi-choice.  For multi-choice, answer using "a", b", "c" or "d" after listening to the choices.
 

@@ -8,6 +8,9 @@ AIntent a
 BIntent b
 CIntent c
 DIntent d
+YesIntent yes
+YesIntent yeah
+NoIntent no
 RankIntent what is my rank
 RankIntent what rank am i
 RankIntent what is my ranking

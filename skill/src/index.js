@@ -65,10 +65,12 @@ function onIntent(intentRequest, session, callback) { // Called when the user sp
   switch(intentName) {
     case "StopIntent":
     case "CancelIntent":
+    case "NoIntent":
       return stop(intentName, session, callback);
     case "HelpIntent":
       return processGameHelp(false, session, callback);
     case "PlayIntent":
+    case "YesIntent":
       return startGame(session.user.userId, callback);
     case "TrueIntent":
     case "FalseIntent":
@@ -170,29 +172,34 @@ function processAnswer(input, session, callback) {
   var sessionAttributes = session.attributes;
 
   var prefix;
+
   if (answer == sessionAttributes.correct) {
     sessionAttributes.currentScore += sessionAttributes.questionNum;
     sessionAttributes.correctCount++;
-    prefix = 'Correct. ';
+    prefix = helpers.getCorrectPhrase();
   } else {
-    prefix = 'Incorrect. ';
+    prefix = helpers.getIncorrectPhrase();
   }
 
   if (sessionAttributes.questionNum == 3) {
-    console.log('TODO: build game summary');
-    return callback();
+    console.log('TODO Set attribs for completed game')
+
+    getSummary(prefix + '. ', sessionAttributes, function (err, sessionAttributes, speechlet) {
+      return callback(err, sessionAttributes, speechlet);
+    });
+
+  } else {
+    // set up for next question
+    var difficulty;
+    if (sessionAttributes.difficulty == 'easy') difficulty = 'medium';
+    else if (sessionAttributes.difficulty == 'medium') difficulty = 'hard';
+
+    sessionAttributes.questionNum++;
+
+    askQuestion(prefix + '. ', sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=' + difficulty, sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
+      return callback(sessionAttributes, speechlet);
+    });
   }
-
-  // set up for next question
-  var difficulty;
-  if (sessionAttributes.difficulty == 'easy') difficulty = 'medium';
-  else if (sessionAttributes.difficulty == 'medium') difficulty = 'hard';
-
-  sessionAttributes.questionNum++;
-
-  askQuestion(prefix, sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=' + difficulty, sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
-    return callback(sessionAttributes, speechlet);
-  });
 }
 
 function startGame(userId, callback) {
@@ -201,7 +208,8 @@ function startGame(userId, callback) {
     questionNum: 1,
     currentScore: 0,
     correctCount: 0,
-    shouldEndSession: false
+    shouldEndSession: false,
+    device: 'Alexa'
   };
 
   askQuestion("Hello. ", sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
@@ -213,6 +221,19 @@ function askQuestion(prefix, sessionAttributes, uri, num, callback) {
   questions.getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, function (err, sessionAttributes, speechlet) {
     return callback(err, sessionAttributes, speechlet);
   });
+}
+
+function getSummary(prefix, sessionAttributes, callback) {
+  console.log('TODO: build game summary');
+  // calculate score with bonus
+
+  // push score
+
+  // grab new rank
+
+  // create card
+
+  return callback(sessionAttributes, callback)
 }
 
 function getRank(userId, callback) {

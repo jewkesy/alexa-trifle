@@ -7,19 +7,27 @@ const losePhrases = ["You got me", "Couldn't get that one", "Good choice", "That
 const startGamePhrases = ["I love this game", "Lets play", "Lets go", "Ok", "Lets do this"];
 const farewellPhrases = ["Please visit www.daryljewkes.com to see live game statistics from the Alexa community", "Please visit www.daryljewkes.com to see the highest scores"];
 const querks = [" what?"];
+const correctPhrases = ["Correct!", "That was correct", "That was right"];
+const inCorrectPhrases = ["Incorrect!", "That was incorrect", "That was wrong"];
 
 module.exports = {
 	getStartGamePhrase: function (playr, greetingIdx, bePolite) {
 		return getStartGamePhrase(playr, greetingIdx, bePolite);
 	},
 	getFarewellPhrase: function () {
-		return getFarewellPhrase();
+		return farewellPhrases[randomInt(0, farewellPhrases.length)] + ". ";
 	},
 	getWinPhrase: function () {
-		return getWinPhrase();
+		return winPhrases[randomInt(0, winPhrases.length)] + ". ";
 	},
 	getLostPhrase: function () {
-		return getLostPhrase();
+		return losePhrases[randomInt(0, losePhrases.length)] + ". ";
+	},
+	getCorrectPhrase: function () {
+		return correctPhrases[randomInt(0, correctPhrases.length)] + ". ";
+	},
+	getIncorrectPhrase: function () {
+		return inCorrectPhrases[randomInt(0, inCorrectPhrases.length)] + ". ";
 	},
 	buildNaturalLangList: function (items, finalWord) {
 		return buildNaturalLangList(items, finalWord);
@@ -140,18 +148,6 @@ function getStartGamePhrase(player, greetingIdx, bePolite) {
 	return startGamePhrases[randomInt(0, startGamePhrases.length)] + ". ";
 }
 
-function getFarewellPhrase() {
-	return farewellPhrases[randomInt(0, farewellPhrases.length)] + ". ";
-}
-
-function getWinPhrase() {
-	return winPhrases[randomInt(0, winPhrases.length)] + ". ";
-}
-
-function getLostPhrase() {
-	return losePhrases[randomInt(0, losePhrases.length)] + ". ";
-}
-
 function handleSpeechQuerks(speech) {
     if (querks.indexOf(speech) > -1) return speech.substring(0, speech.length - 1);
     return speech;
@@ -183,8 +179,6 @@ function getRandomFact(summary) {
   console.log(retVal)
   return retVal
 }
-
-
 
 function randomInt(low, high) {
   return Math.floor(Math.random() * high);

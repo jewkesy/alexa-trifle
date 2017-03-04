@@ -28,6 +28,12 @@
       "intent": "DIntent"
     },
     {
+      "intent": "YesIntent"
+    },
+    {
+      "intent": "NoIntent"
+    },
+    {
       "intent": "RepeatIntent"
     },
     {
