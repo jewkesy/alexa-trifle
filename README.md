@@ -12,13 +12,14 @@ You will be asked three questions from a random selection of categories with inc
 
 Questions are answered either by "true" or "false", or multi-choice.  For multi-choice, answer using "a", b", "c" or "d" after listening to the choices.
 
-Correctly answering 'Easy' gives you 1 points.
+Correctly answering 'Easy' gives you 1 point.
 Correctly answering 'Medium' gives you 2 points.
 Correctly answering 'Hard' gives you 3 points.
 
-Each correct answer awards 1 bonus point.
-So 2 correct answers (eg Easy and Hard) will award you a score of 6 points.
-So 3 correct answers will award you a maximum of 9 points.
+If you correctly answer all 3 questions, you are awarded 3 bonus points for a maximum score of 9 points.
+If you only correctly answer 'Medium' and 'Hard', you are awarded 2 bonus points for a final score of 7 points.
+If you only correctly answer 'Easy' and 'Medium', you are awarded 1 bonus point for a final score of 4 points.
+If you only correctly answer 'Easy' and 'Hard', you are awarded 1 bonus point for a final score of 4 points.
 
 Alexa will keep your score and tell you your world ranking position compared against other Alexa players.
 
