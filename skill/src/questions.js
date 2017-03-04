@@ -60,9 +60,10 @@ function getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, callback) {
     sessionAttributes.correctLetter = alexa.correctLetter;
     sessionAttributes.correctAnswer = result.results[0].correct_answer;
     sessionAttributes.questionType = result.results[0].type;
+    sessionAttributes.repromptText = alexa.repromptText;
 
     // console.log(alexa, sessionAttributes)
-    var speechlet = skillHelper.buildSpeechletResponse(alexa.title, alexa.sayText, alexa.repromptText, false, alexa.cardText);
+    var speechlet = skillHelper.buildSpeechletResponse(alexa.title, alexa.sayText, alexa.repromptText, false, true, alexa.cardText);
     // console.log(speechlet)
     return callback(null, sessionAttributes, speechlet);
   });

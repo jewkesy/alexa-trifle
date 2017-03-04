@@ -93,7 +93,7 @@ function onIntent(intentRequest, session, callback) { // Called when the user sp
 function stop(intent, session, callback) {
   var sessionAttributes = session.attributes;
   sessionAttributes.intent = intent;
-  callback(sessionAttributes, skillHelper.buildSpeechletResponse("Goodbye", "Thanks for playing", "", true));
+  callback(sessionAttributes, skillHelper.buildSpeechletResponse("Goodbye", "Thanks for playing", "", true, false));
 }
 
 function repeatQuestion(intent, session, callback) {
@@ -106,24 +106,24 @@ function repeatQuestion(intent, session, callback) {
 
 function unknownAnswer(session, callback) {
   var sessionAttributes = session.attributes;
-  callback(sessionAttributes, skillHelper.buildSpeechletResponse("Invalid Answer", "Sorry, I didn't understand the answer.\nPlease try again or say help.", sessionAttributes.questionText, false));
+  callback(sessionAttributes, skillHelper.buildSpeechletResponse("Invalid Answer", "Sorry, I didn't understand the answer.\nPlease try again or say help.", sessionAttributes.questionText, false, false));
 }
 
 function invalidAnswer(intent, session, callback) {
-  console.log(intent);
   var sessionAttributes = session.attributes;
   sessionAttributes.intent = intent;
-  var optionlist = helpers.buildNaturalLangList(Object(sessionAttributes.options), 'or');
-  console.log(optionlist)
-  var questiontext = "Sorry, that was not a valid answer.\n";
 
-  if(sessionAttributes.questionNum.toString() == '1') {
-    questiontext += "You can say " + optionlist;
+  var questiontext = "Sorry, that was not a valid answer. ";
+
+  if (sessionAttributes.questionType == 'multiple') {
+    questiontext += "You can say a, b, c or d";
   } else {
-    questiontext += "Please try again or ask for help.\n" + sessionAttributes.questionText;
+    questiontext += "You can say true or false";
   }
-console.log(questiontext)
-  callback(sessionAttributes, skillHelper.buildSpeechletResponse("Invalid Answer", questiontext, sessionAttributes.questionText, false));
+  console.log(sessionAttributes)
+  var speechlet = skillHelper.buildSpeechletResponse("Invalid Answer", questiontext, sessionAttributes.repromptText, false, false);
+  console.log(speechlet)
+  callback(sessionAttributes, speechlet);
 }
 
 function processGameHelp(firstQuestion, session, callback) {
@@ -131,7 +131,7 @@ function processGameHelp(firstQuestion, session, callback) {
   sessionAttributes.intent = 'HelpIntent';
   var text = "TODO Answer three questions that steadily get more difficult.  Points increase for each correct answer.\n";
 
-  var opts = helpers.buildNaturalLangList(Object(sessionAttributes.options), 'or');
+  var opts = helpers.buildNaturalLangList(sessionAttributes.options, 'or');
 
   if (firstQuestion) {
     text += "You can say " + opts + '.\n' + sessionAttributes.questionText;
@@ -139,7 +139,9 @@ function processGameHelp(firstQuestion, session, callback) {
     text = "You can say " + opts + '.\n' + sessionAttributes.questionText;
   }
 
-  callback(sessionAttributes, skillHelper.buildSpeechletResponse("Help", text, sessionAttributes.questionText, false));
+  var speechlet = skillHelper.buildSpeechletResponse("Help", text, sessionAttributes.questionText, false, false);
+  console.log(speechlet);
+  callback(sessionAttributes, speechlet);
 }
 
 function processAnswer(input, session, callback) {
@@ -242,7 +244,7 @@ function getSummary(prefix, sessionAttributes, callback) {
 
   // create card
 
-  return callback(sessionAttributes, callback)
+  return callback(sessionAttributes, callback);
 }
 
 function getRank(userId, callback) {

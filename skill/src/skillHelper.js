@@ -4,20 +4,21 @@ var console = require('tracer').colorConsole();
 var helpers = require('./helpers.js');
 
 module.exports = {
-	buildSpeechletResponse: function (title, output, repromptText, shouldEndSession, cardText, cardType) {
-		return buildSpeechletResponse(title, output, repromptText, shouldEndSession, cardText, cardType);
+	buildSpeechletResponse: function (title, output, repromptText, shouldEndSession, showCard, cardText, cardType) {
+		return buildSpeechletResponse(title, output, repromptText, shouldEndSession, showCard, cardText, cardType);
 	},
   buildResponse: function (sessionAttributes, speechletResponse) {
     return buildResponse(sessionAttributes, speechletResponse);
   }
 }
 
-function buildSpeechletResponse(title, output, repromptText, shouldEndSession, cardText, cardType) {
+function buildSpeechletResponse(title, output, repromptText, shouldEndSession, showCard, cardText, cardType) {
 
-  if (typeof cardType == 'undefined') cardType = "Simple";  // Standard
-  if (typeof cardText == 'undefined') cardText = output;
+  if (showCard && typeof cardType == 'undefined') cardType = "Simple";  // Standard
+  if (showCard && typeof cardText == 'undefined') cardText = output;
+
   output = helpers.handleSpeechQuerks(output);
-  return {
+  var retVal = {
     outputSpeech: {
       type: "SSML", // PlainText or SSML
       ssml: "<speak>" + output + "</speak>"
@@ -31,12 +32,16 @@ function buildSpeechletResponse(title, output, repromptText, shouldEndSession, c
     reprompt: {
       outputSpeech: {
         type: "SSML", // PlainText or SSML
-        ssml: "<speak>" + output + "</speak>"
+        ssml: "<speak>" + repromptText + "</speak>"
 				//  text: repromptText
       }
     },
     shouldEndSession: shouldEndSession
   };
+	if (!showCard) {
+		delete retVal.card;
+	}
+	return retVal
 }
 
 function buildResponse(sessionAttributes, speechletResponse) {
