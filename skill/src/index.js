@@ -68,7 +68,7 @@ function onIntent(intentRequest, session, callback) { // Called when the user sp
     case "NoIntent":
       return stop(intentName, session, callback);
     case "HelpIntent":
-      return processGameHelp(false, session, callback);
+      return processGameHelp(intentName, session, callback);
     case "PlayIntent":
     case "YesIntent":
       return startGame(session.user.userId, callback);
@@ -126,20 +126,14 @@ function invalidAnswer(intent, session, callback) {
   callback(sessionAttributes, speechlet);
 }
 
-function processGameHelp(firstQuestion, session, callback) {
+function processGameHelp(intent, session, callback) {
   var sessionAttributes = session.attributes;
-  sessionAttributes.intent = 'HelpIntent';
-  var text = "TODO Answer three questions that steadily get more difficult.  Points increase for each correct answer.\n";
+  sessionAttributes.intent = intent;
+  var text = "Answer three questions that steadily get more difficult. Points increase for each correct answer. " +
+    "Answer by saying true or false, or a, b, c or d depending on the question. " +
+    "View your Alexa app see the questions, your current score and your rank. ";
 
-  var opts = helpers.buildNaturalLangList(sessionAttributes.options, 'or');
-
-  if (firstQuestion) {
-    text += "You can say " + opts + '.\n' + sessionAttributes.questionText;
-  } else {
-    text = "You can say " + opts + '.\n' + sessionAttributes.questionText;
-  }
-
-  var speechlet = skillHelper.buildSpeechletResponse("Help", text, sessionAttributes.questionText, false, false);
+  var speechlet = skillHelper.buildSpeechletResponse("Help", text, sessionAttributes.repromptText, false, false);
   console.log(speechlet);
   callback(sessionAttributes, speechlet);
 }
