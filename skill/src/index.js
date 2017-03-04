@@ -230,7 +230,7 @@ function askQuestion(prefix, sessionAttributes, uri, num, callback) {
 }
 
 function getSummary(prefix, sessionAttributes, callback) {
-  console.log('TODO: build game summary');
+  console.log('TODO: build game summary'), prefix;
   // calculate score with bonus
 
   // push score
@@ -239,7 +239,14 @@ function getSummary(prefix, sessionAttributes, callback) {
 
   // create card
 
-  return callback(sessionAttributes, callback);
+  // console.log(alexa, sessionAttributes)
+  var speechlet = skillHelper.buildSpeechletResponse("alexa.title", "alexa.sayText", "alexa.repromptText", false, true, "alexa.cardText");
+  // console.log(speechlet)
+  return callback(null, sessionAttributes, speechlet);
+
+
+
+  // return callback(sessionAttributes, callback);
 }
 
 function getRank(userId, callback) {
