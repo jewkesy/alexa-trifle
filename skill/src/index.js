@@ -11,7 +11,7 @@ var ALEXA_APP_ID =  process.env.ALEXA_APP_ID    || process.argv[3];
 
 exports.handler = function (event, context) {
   try {
-    // console.log(event.request);
+    console.log(event.request);
     // console.log("event.session.application.applicationId=" + event.session.application.applicationId, "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID);
 
     // if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID) {
@@ -35,6 +35,7 @@ exports.handler = function (event, context) {
       context.succeed();
     }
   } catch (e) {
+    console.log(e)
     context.fail("Exception: " + e);
   }
 };
@@ -54,7 +55,7 @@ function onLaunch(launchRequest, session, callback) { // Called when the user la
 
 function onIntent(intentRequest, session, callback) { // Called when the user specifies an intent for this application.
   // console.log("onIntent requestId=" + intentRequest.requestId + ", sessionId=" + session.sessionId + ", intentName=" + intentRequest.intent.name);
-  // console.log('onIntent', intentRequest)
+  console.log('onIntent', intentRequest)
 
   var intent = intentRequest.intent, intentName = intentRequest.intent.name;
 
@@ -63,14 +64,14 @@ function onIntent(intentRequest, session, callback) { // Called when the user sp
   if (typeof sessionAttributes == 'undefined') return startGame(session.user.userId, callback);
   // event.request.intent.slots.Answer.value
   switch(intentName) {
-    case "StopIntent":
+    case "AMAZON.StopIntent":
     case "CancelIntent":
-    case "NoIntent":
+    case "AMAZON.NoIntent":
       return stop(intentName, session, callback);
-    case "HelpIntent":
+    case "AMAZON.HelpIntent":
       return processGameHelp(intentName, session, callback);
     case "PlayIntent":
-    case "YesIntent":
+    case "AMAZON.YesIntent":
       return startGame(session.user.userId, callback);
     case "TrueIntent":
     case "FalseIntent":

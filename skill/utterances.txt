@@ -9,14 +9,17 @@ BIntent b
 CIntent c
 DIntent d
 YesIntent yes
-YesIntent yeah
 NoIntent no
+RankIntent rank
+RankIntent get rank
 RankIntent what is my rank
 RankIntent what rank am i
 RankIntent what is my ranking
 RankIntent what ranking am i
 RankIntent what is my global ranking
 RankIntent tell me my rank
+ScoreIntent score
+ScoreIntent get score
 ScoreIntent what is my score
 ScoreIntent what score am i
 ScoreIntent tell me my score

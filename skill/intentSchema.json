@@ -1,13 +1,13 @@
 {
   "intents": [
     {
-      "intent": "StopIntent"
+      "intent": "AMAZON.StopIntent"
     },
     {
       "intent": "CancelIntent"
     },
     {
-      "intent": "HelpIntent"
+      "intent": "AMAZON.HelpIntent"
     },
     {
       "intent": "TrueIntent"
@@ -28,10 +28,10 @@
       "intent": "DIntent"
     },
     {
-      "intent": "YesIntent"
+      "intent": "AMAZON.YesIntent"
     },
     {
-      "intent": "NoIntent"
+      "intent": "AMAZON.NoIntent"
     },
     {
       "intent": "RepeatIntent"
