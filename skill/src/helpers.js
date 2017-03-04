@@ -8,7 +8,7 @@ const startGamePhrases = ["I love this game", "Lets play", "Lets go", "Ok", "Let
 const farewellPhrases = ["Please visit www.daryljewkes.com to see live game statistics from the Alexa community", "Please visit www.daryljewkes.com to see the highest scores"];
 const querks = [" what?"];
 const correctPhrases = ["Correct!", "That was correct", "That was right"];
-const inCorrectPhrases = ["Incorrect!", "That was incorrect", "That was wrong"];
+const incorrectPhrases = ["Incorrect!", "That was incorrect", "That was wrong"];
 
 module.exports = {
 	getStartGamePhrase: function (playr, greetingIdx, bePolite) {
@@ -26,8 +26,8 @@ module.exports = {
 	getCorrectPhrase: function () {
 		return correctPhrases[randomInt(0, correctPhrases.length)] + ". ";
 	},
-	getIncorrectPhrase: function () {
-		return inCorrectPhrases[randomInt(0, inCorrectPhrases.length)] + ". ";
+	getIncorrectPhrase: function (correctLetter, correctAnswer) {
+		return getIncorrectPhrases[randomInt(0, incorrectPhrases.length)] + ". ";
 	},
 	buildNaturalLangList: function (items, finalWord) {
 		return buildNaturalLangList(items, finalWord);
@@ -50,6 +50,15 @@ module.exports = {
 	shuffle: function (arr) {
 		return shuffle(arr);
 	}
+}
+
+function getIncorrectPhrases(correctLetter, correctAnswer) {
+	console.log(correctLetter, correctAnswer);
+
+	var retVal = incorrectPhrases[randomInt(0, inCorrectPhrases.length)] + ". ";
+
+
+	return retVal;
 }
 
 function getStartGamePhrase(player, greetingIdx, bePolite) {

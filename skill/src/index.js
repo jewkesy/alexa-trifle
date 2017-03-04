@@ -35,7 +35,7 @@ exports.handler = function (event, context) {
       context.succeed();
     }
   } catch (e) {
-    console.log(e)
+    // console.log(e)
     context.fail("Exception: " + e);
   }
 };
@@ -179,13 +179,22 @@ function processAnswer(input, session, callback) {
 
   var prefix;
 
+  var answerStats = {
+    num: sessionAttributes.questionNum,
+    category: sessionAttributes.category
+  }
+
   if (answer == sessionAttributes.correct) {
+    answerStats.correct = true;
     sessionAttributes.currentScore += sessionAttributes.questionNum;
     sessionAttributes.correctCount++;
     prefix = helpers.getCorrectPhrase();
   } else {
-    prefix = helpers.getIncorrectPhrase();
+    answerStats.correct = false;
+    prefix = helpers.getIncorrectPhrase(sessionAttributes.correct, sessionAttributes.correctAnswer);
   }
+
+  sessionAttributes.correctAnswers.push(answerStats);
 
   if (sessionAttributes.questionNum == 3) {
     console.log('TODO Set attribs for completed game')
@@ -214,6 +223,7 @@ function startGame(userId, callback) {
     questionNum: 1,
     currentScore: 0,
     correctCount: 0,
+    correctAnswers: [],
     shouldEndSession: false,
     device: 'Alexa'
   };
