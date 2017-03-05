@@ -1,8 +1,8 @@
 {
-  "name": "alexa-trifle",
+  "name": "alexa-trifle-test",
   "version": "0.1.0",
-  "description": "Alexa Skill trivia game",
-  "main": "index.js",
+  "description": "Trivia Test Logic",
+  "main": "test_mongo.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
