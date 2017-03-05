@@ -27,7 +27,7 @@ module.exports = {
 		return correctPhrases[randomInt(0, correctPhrases.length)] + ". ";
 	},
 	getIncorrectPhrase: function (correctLetter, correctAnswer) {
-		return getIncorrectPhrases[randomInt(0, incorrectPhrases.length)] + ". ";
+		return getIncorrectPhrase(correctLetter, correctAnswer);
 	},
 	buildNaturalLangList: function (items, finalWord) {
 		return buildNaturalLangList(items, finalWord);
@@ -52,11 +52,15 @@ module.exports = {
 	}
 }
 
-function getIncorrectPhrases(correctLetter, correctAnswer) {
-	console.log(correctLetter, correctAnswer);
+function getIncorrectPhrase(correctLetter, correctAnswer) {
 
-	var retVal = incorrectPhrases[randomInt(0, inCorrectPhrases.length)] + ". ";
+	var retVal = incorrectPhrases[randomInt(0, incorrectPhrases.length)] + ". The correct answer was ";
 
+	if (correctLetter == 'true' || correctLetter == 'false') {
+		retVal += correctLetter + ".";
+	} else {
+		retVal += correctLetter + ") " + correctAnswer + ".";
+	}
 
 	return retVal;
 }

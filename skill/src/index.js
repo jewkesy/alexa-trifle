@@ -11,7 +11,7 @@ var ALEXA_APP_ID =  process.env.ALEXA_APP_ID    || process.argv[3];
 
 exports.handler = function (event, context) {
   try {
-    console.log(event.request);
+    // console.log(event.request);
     // console.log("event.session.application.applicationId=" + event.session.application.applicationId, "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID);
 
     // if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID) {
@@ -55,7 +55,7 @@ function onLaunch(launchRequest, session, callback) { // Called when the user la
 
 function onIntent(intentRequest, session, callback) { // Called when the user specifies an intent for this application.
   // console.log("onIntent requestId=" + intentRequest.requestId + ", sessionId=" + session.sessionId + ", intentName=" + intentRequest.intent.name);
-  console.log('onIntent', intentRequest)
+  // console.log('onIntent', intentRequest)
 
   var intent = intentRequest.intent, intentName = intentRequest.intent.name;
 
@@ -107,7 +107,7 @@ function repeatQuestion(intent, session, callback) {
 
 function unknownAnswer(session, callback) {
   var sessionAttributes = session.attributes;
-  callback(sessionAttributes, skillHelper.buildSpeechletResponse("Invalid Answer", "Sorry, I didn't understand the answer.\nPlease try again or say help.", sessionAttributes.questionText, false, false));
+  callback(sessionAttributes, skillHelper.buildSpeechletResponse("Invalid Answer", "Sorry, I didn't understand the answer. Please try again ask for help.", sessionAttributes.questionText, false, false));
 }
 
 function invalidAnswer(intent, session, callback) {
@@ -195,6 +195,9 @@ function processAnswer(input, session, callback) {
   }
 
   sessionAttributes.correctAnswers.push(answerStats);
+
+
+  console.log(prefix, sessionAttributes)
 
   if (sessionAttributes.questionNum == 3) {
     console.log('TODO Set attribs for completed game')
