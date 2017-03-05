@@ -1,13 +1,15 @@
 "use strict";
 
 // var async = require('async');
-var questions = require('./questions.js');
+var questions =   require('./questions.js');
 var skillHelper = require('./skillHelper.js');
-var helpers = require('./helpers.js');
-var console = require('tracer').colorConsole();
+var helpers =     require('./helpers.js');
+var console =     require('tracer').colorConsole();
 
 var QUESTIONS_URI = process.env.QUESTIONS_URI   || process.argv[2];
 var ALEXA_APP_ID =  process.env.ALEXA_APP_ID    || process.argv[3];
+var MONGO_URI =     process.env.MONGO_URI       || process.argv[4];
+var MONGO_API_KEY = process.env.MONGO_API_KEY   || process.argv[5];
 
 exports.handler = function (event, context) {
   try {
