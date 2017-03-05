@@ -17,7 +17,45 @@ module.exports = {
   },
   getSessionKey: function (uri, callback) {
     return getSessionKey(uri, callback);
+  },
+  getFinalScore: function (scores) {
+    return getFinalScore(scores);
   }
+}
+
+function getFinalScore(scores) {
+  var score;   // calculate score with bonus
+  var a = scores[0];
+  var b = scores[1];
+  var c = scores[2];
+  // all right
+  if (a.correct == true && b.correct == true && c.correct == true) {
+    // max points
+    score = 9;
+  } else {
+    if (a.correct == false && b.correct == true && c.correct == true) {
+      // medium + hard
+      score = 7;
+    } else if (a.correct == true && b.correct == true && c.correct == false) {
+      // easy + medium
+      score = 4;
+    } else if (a.correct == true && b.correct == false && c.correct == true) {
+      // easy + hard
+      score = 4;
+    } else {
+      // default
+      if (c.correct == true) {
+        score = 3;
+      } else if (b.correct == true) {
+        score = 2;
+      } else if (a.correct == true) {
+        score = 1;
+      } else {
+        score = 0;
+      }
+    }
+  }
+  return score;
 }
 
 function getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, callback) {

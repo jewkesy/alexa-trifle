@@ -196,11 +196,10 @@ function processAnswer(input, session, callback) {
 
   sessionAttributes.correctAnswers.push(answerStats);
 
-
-  console.log(prefix, sessionAttributes)
+  // console.log(prefix, sessionAttributes)
 
   if (sessionAttributes.questionNum == 3) {
-    console.log('TODO Set attribs for completed game')
+    // console.log('TODO Set attribs for completed game')
 
     getSummary(prefix + '. ', sessionAttributes, function (err, sessionAttributes, speechlet) {
       return callback(sessionAttributes, speechlet);
@@ -228,7 +227,9 @@ function startGame(userId, callback) {
     correctCount: 0,
     correctAnswers: [],
     shouldEndSession: false,
-    device: 'Alexa'
+    device: 'Alexa',
+    userScore: 0,
+    userRank: 4
   };
 
   askQuestion("Hello. ", sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
@@ -243,29 +244,41 @@ function askQuestion(prefix, sessionAttributes, uri, num, callback) {
 }
 
 function getSummary(prefix, sessionAttributes, callback) {
-  console.log('TODO: build game summary'), prefix;
-  // calculate score with bonus
+  console.log(sessionAttributes)
+
+  var score = questions.getFinalScore(sessionAttributes.correctAnswers)
+  console.log(score);
+
+  var summary = "After 3 questions, you scored " + score;
+  if (score == 1) {
+    summary += " point. "
+  } else {
+    summary += " points. "
+  }
 
   // push score
 
   // grab new rank
+  var rank = 3
 
   // create card
+  var combinedScore = score + sessionAttributes.userScore;
+  var cardText = "Points this game: " + score + "\nTotal score: " + combinedScore + "\nGlobal rank: #" + rank;
+
+  summary += "You have a total of " + combinedScore + " points and your global rank position is now number " + rank + ". ";
 
   // console.log(alexa, sessionAttributes)
-  var speechlet = skillHelper.buildSpeechletResponse("alexa.title", "alexa.sayText", "alexa.repromptText", false, true, "alexa.cardText");
+  var speechlet = skillHelper.buildSpeechletResponse("Game Summary", prefix + summary + "Would you like to play again?", "Would you like to play again?", false, true, cardText);
   // console.log(speechlet)
   return callback(null, sessionAttributes, speechlet);
-
-
-
-  // return callback(sessionAttributes, callback);
 }
 
 function getRank(userId, callback) {
+  // userRank
   return callback(null, {});
 }
 
 function getScore(userId, callback) {
+  // userScore
   return callback(null, {});
 }
