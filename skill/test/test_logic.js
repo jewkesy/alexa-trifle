@@ -1,4 +1,7 @@
 "use strict";
+
+// TODO bring in gulp
+
 var assert = require('assert');
 // var async = require('async');
 var questions = require('./../src/questions.js');
@@ -7,6 +10,19 @@ var helpers = require('../src/helpers.js');
 // var console = require('tracer').colorConsole();
 
 var QUESTIONS_URI = process.env.QUESTIONS_URI || process.argv[2];
+
+(function testPrepCategoryForSSML() {
+
+  assert(helpers.prepCategoryForSSML("General Knowledge") == "General Knowledge", "SSML Fail");
+  assert(helpers.prepCategoryForSSML("Entertainment: Books") == "Books", "SSML Fail");
+  assert(helpers.prepCategoryForSSML("Entertainment: Musicals & Theatres") == "Musicals and Theatres", "SSML Fail");
+  assert(helpers.prepCategoryForSSML("Entertainment: Video Games") == "Video Games", "SSML Fail");
+  assert(helpers.prepCategoryForSSML("Science & Nature") == "Science and Nature", "SSML Fail");
+  assert(helpers.prepCategoryForSSML("Science: Computers") == "Computers", "SSML Fail");
+  assert(helpers.prepCategoryForSSML("Entertainment: Japanese Anime & Manga") == "Japanese Anime and Manga", "SSML Fail");
+
+})();
+
 
 function getMultiChoiceQuestion(num) {
   // Handle multichoice question

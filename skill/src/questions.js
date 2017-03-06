@@ -78,9 +78,12 @@ function getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, callback) {
     difficulty = 'hard';
   }
 
+
+
   getQuestions(uri, function (err, result) {
     if (err) return callback(err);
-
+    var cat = helpers.prepCategoryForSSML(result.results[0].category);
+    speechPrefix += ' The category is ' + cat + ". ";
     var alexa;
     if (result.results[0].type == 'multiple') {
       alexa = buildMultiChoiceQuestion(result.results[0], difficulty, prefix + speechPrefix, num);
@@ -99,7 +102,7 @@ function getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, callback) {
     sessionAttributes.correctAnswer = result.results[0].correct_answer;
     sessionAttributes.questionType = result.results[0].type;
     sessionAttributes.repromptText = alexa.repromptText;
-    sessionAttributes.category = result.results[0].category;
+    sessionAttributes.category = cat;
 
     // console.log(alexa, sessionAttributes)
     var speechlet = skillHelper.buildSpeechletResponse(alexa.title, alexa.sayText, alexa.repromptText, false, true, alexa.cardText);

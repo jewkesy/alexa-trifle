@@ -11,6 +11,9 @@ const correctPhrases = ["Correct!", "That was correct", "That was right"];
 const incorrectPhrases = ["Incorrect!", "That was incorrect", "That was wrong"];
 
 module.exports = {
+	prepCategoryForSSML: function (text) {
+		return prepCategoryForSSML(text);
+	},
 	getStartGamePhrase: function (playr, greetingIdx, bePolite) {
 		return getStartGamePhrase(playr, greetingIdx, bePolite);
 	},
@@ -50,6 +53,20 @@ module.exports = {
 	shuffle: function (arr) {
 		return shuffle(arr);
 	}
+}
+
+function prepCategoryForSSML(text) {
+
+	var colon = text.indexOf(':');
+	var cat;
+	if (colon > -1) {
+		cat = text.split(':')[1].trim();
+	} else {
+		cat = text
+	}
+
+	// console.log(cat, colon)
+	return cat.replace(" & ", " and ");
 }
 
 function getIncorrectPhrase(correctLetter, correctAnswer) {
