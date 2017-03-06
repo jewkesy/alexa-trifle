@@ -14,6 +14,9 @@ module.exports = {
 	prepCategoryForSSML: function (text) {
 		return prepCategoryForSSML(text);
 	},
+	prepQuestionForSSML: function (text) {
+		return prepQuestionForSSML(text);
+	},
 	getStartGamePhrase: function (playr, greetingIdx, bePolite) {
 		return getStartGamePhrase(playr, greetingIdx, bePolite);
 	},
@@ -53,6 +56,24 @@ module.exports = {
 	shuffle: function (arr) {
 		return shuffle(arr);
 	}
+}
+
+function prepQuestionForSSML(text) {
+	text = replaceAll(text, "&ldquo;", "&quot;");
+	text = replaceAll(text, "&rdquo;", "&quot;");
+
+	text = replaceAll(text, "??", "?");
+	text = replaceAll(text, ". . ", ". ")
+
+	console.log(text)
+	return text;
+}
+
+function replaceAll(str, find, replace) {
+  return str.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
+function escapeRegExp(str) {
+    return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
 }
 
 function prepCategoryForSSML(text) {
@@ -179,8 +200,9 @@ function getStartGamePhrase(player, greetingIdx, bePolite) {
 }
 
 function handleSpeechQuerks(speech) {
-    if (querks.indexOf(speech) > -1) return speech.substring(0, speech.length - 1);
-    return speech;
+	speech = prepQuestionForSSML(speech);
+  if (querks.indexOf(speech) > -1) return speech.substring(0, speech.length - 1);
+  return speech;
 }
 
 function buildNaturalLangList(items, finalWord) {

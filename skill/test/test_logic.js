@@ -11,6 +11,20 @@ var helpers = require('../src/helpers.js');
 
 var QUESTIONS_URI = process.env.QUESTIONS_URI || process.argv[2];
 
+
+(function testPrepQuestionForSSML(){
+  // This field is sometimes known as &ldquo;The Dismal Science.&rdquo;?
+  // That was correct. . Second question for 2 points. The category is General Knowledge. This field is sometimes known as &ldquo;The Dismal Science.&rdquo;? Is it a) Politics, b) Economics, c) Philosophy, or d) Physics
+  assert(helpers.prepQuestionForSSML(
+    "That was correct. . Second question for 2 points. The category is General Knowledge. This field is sometimes known as &ldquo;The Dismal Science.&rdquo;? Is it a) Politics, b) Economics, c) Philosophy, or d) Physics") ==
+    "That was correct. Second question for 2 points. The category is General Knowledge. This field is sometimes known as &quot;The Dismal Science.&quot;? Is it a) Politics, b) Economics, c) Philosophy, or d) Physics", "SSML Fail");
+  assert(helpers.prepQuestionForSSML(
+    "Hello. First question for 1 point.  The category is Cartoon and Animations. What was the first Disney movie to use CGI?? Is it a) Toy Story, b) The Black Cauldron, c) Tron, or d) Fantasia") ==
+    "Hello. First question for 1 point.  The category is Cartoon and Animations. What was the first Disney movie to use CGI? Is it a) Toy Story, b) The Black Cauldron, c) Tron, or d) Fantasia", "SSML Fail");
+
+
+})();
+
 (function testPrepCategoryForSSML() {
 
   assert(helpers.prepCategoryForSSML("General Knowledge") == "General Knowledge", "SSML Fail");

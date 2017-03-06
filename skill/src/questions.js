@@ -78,8 +78,6 @@ function getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, callback) {
     difficulty = 'hard';
   }
 
-
-
   getQuestions(uri, function (err, result) {
     if (err) return callback(err);
     var cat = helpers.prepCategoryForSSML(result.results[0].category);
@@ -104,7 +102,7 @@ function getAlexaReadyQuestion(prefix, sessionAttributes, uri, num, callback) {
     sessionAttributes.repromptText = alexa.repromptText;
     sessionAttributes.category = cat;
 
-    // console.log(alexa, sessionAttributes)
+    console.log(alexa, sessionAttributes)
     var speechlet = skillHelper.buildSpeechletResponse(alexa.title, alexa.sayText, alexa.repromptText, false, true, alexa.cardText);
     // console.log(speechlet)
     return callback(null, sessionAttributes, speechlet);
