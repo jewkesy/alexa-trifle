@@ -21,7 +21,15 @@ var QUESTIONS_URI = process.env.QUESTIONS_URI || process.argv[2];
   assert(helpers.prepQuestionForSSML(
     "Hello. First question for 1 point.  The category is Cartoon and Animations. What was the first Disney movie to use CGI?? Is it a) Toy Story, b) The Black Cauldron, c) Tron, or d) Fantasia") ==
     "Hello. First question for 1 point.  The category is Cartoon and Animations. What was the first Disney movie to use CGI? Is it a) Toy Story, b) The Black Cauldron, c) Tron, or d) Fantasia", "SSML Fail");
-
+  assert(helpers.prepQuestionForSSML(
+    "That was incorrect. The correct answer was c) Queen.. Second question for 2 points.  The category is General Knowledge. What is the name of the very first video uploaded to YouTube? Is it a) Me at the zoo, b) tribute, c) carrie rides a truck, or d) Her new puppy from great grandpa vern.") ==
+    "That was incorrect. The correct answer was c) Queen. Second question for 2 points.  The category is General Knowledge. What is the name of the very first video uploaded to YouTube? Is it a) Me at the zoo, b) tribute, c) carrie rides a truck, or d) Her new puppy from great grandpa vern.", "SSML Fail");
+  assert(helpers.prepQuestionForSSML(
+    "That was incorrect. The correct answer was c) Queen.. Second question for 2 points.  The category is General Knowledge. What is the name of the very first video uploaded to YouTube? Is it a) Me at the zoo, b) tribute, c) carrie rides a truck, or d) Her new puppy from great grandpa vern.") ==
+    "That was incorrect. The correct answer was c) Queen. Second question for 2 points.  The category is General Knowledge. What is the name of the very first video uploaded to YouTube? Is it a) Me at the zoo, b) tribute, c) carrie rides a truck, or d) Her new puppy from great grandpa vern.", "SSML Fail");
+  assert(helpers.prepQuestionForSSML(
+    "Incorrect!. The correct answer was a) Me at the zoo.. Final question for 3 points.  The category is Video Games. True or False. In the game &quot;Melty Blood Actress Again Current Code&quot;, you can enter Blood Heat mode in Half Moon style.") ==
+    "Incorrect! The correct answer was a) Me at the zoo. Final question for 3 points.  The category is Video Games. True or False. In the game &quot;Melty Blood Actress Again Current Code&quot;, you can enter Blood Heat mode in Half Moon style.", "SSML Fail");
 
 })();
 

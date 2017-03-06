@@ -63,7 +63,9 @@ function prepQuestionForSSML(text) {
 	text = replaceAll(text, "&rdquo;", "&quot;");
 
 	text = replaceAll(text, "??", "?");
-	text = replaceAll(text, ". . ", ". ")
+	text = replaceAll(text, ". . ", ". ");
+	text = replaceAll(text, ".. ", ". ");
+	text = replaceAll(text, "!. ", "! ");
 
 	console.log(text)
 	return text;
