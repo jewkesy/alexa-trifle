@@ -10,6 +10,9 @@ module.exports = {
   setUserSummary: function (summary, uri, apiKey, callback) {
     return setUserSummary(summary, uri, apiKey, callback);
   },
+  getUserRank: function (userId, score, uri, apiKey, callback) {
+    return getUserRank(userId, score, uri, apiKey, callback);
+  }
 }
 
 function getUserSummary(userId, uri, apiKey, callback) {
@@ -31,5 +34,23 @@ function setUserSummary(summary, uri, apiKey, callback) {
   }, function(err, response, body) {
     // console.log(err, response, body);
     return callback(err, body)
+  });
+}
+
+function getUserRank(userId, score, uri, apiKey, callback) {
+  // where score is GE 
+  var filter = '&q={"score":{$gte:' + score + '}}';
+
+  var sort = '&s={"score":-1,"timestamp":1}';
+
+  var url = uri + "?c=true&apiKey=" + apiKey + filter + sort;
+  console.log(url)
+
+  request.get({
+    headers: {'content-type':'application/json'},
+    url:     url,
+  }, function(err, response, body){
+    // console.log(JSON.parse(body));
+    return callback(err, JSON.parse(body))
   });
 }
