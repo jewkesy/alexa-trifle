@@ -1,6 +1,7 @@
 "use strict";
 
 // var async = require('async');
+var mongo =       require('./mongo.js');
 var questions =   require('./questions.js');
 var skillHelper = require('./skillHelper.js');
 var helpers =     require('./helpers.js');
@@ -222,20 +223,26 @@ function processAnswer(input, session, callback) {
 }
 
 function startGame(userId, callback) {
-  // console.log("TODO get user from db");
-  var sessionAttributes = {
-    questionNum: 1,
-    currentScore: 0,
-    correctCount: 0,
-    correctAnswers: [],
-    shouldEndSession: false,
-    device: 'Alexa',
-    userScore: 0,
-    userRank: 4
-  };
+  // userId, uri, apiKey, callback
+  mongo.getUserSummary(userId, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, user) {
+    if (user.length == 0) user.score = 0;
 
-  askQuestion("Hello. ", sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
-    return callback(sessionAttributes, speechlet);
+    console.log(user);
+
+    var sessionAttributes = {
+      questionNum: 1,
+      currentScore: 0,
+      correctCount: 0,
+      correctAnswers: [],
+      shouldEndSession: false,
+      device: 'Alexa',
+      userScore: user.score
+    };
+
+    askQuestion("Hello. ", sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
+      console.log(speechlet);
+      return callback(sessionAttributes, speechlet);
+    });
   });
 }
 
@@ -282,5 +289,6 @@ function getRank(userId, callback) {
 
 function getScore(userId, callback) {
   // userScore
+
   return callback(null, {});
 }

@@ -16,15 +16,20 @@ module.exports = {
 }
 
 function getUserSummary(userId, uri, apiKey, callback) {
+  console.log(userId, uri);
+  var filter = '&q={"userId":"' + userId + '"}';
+  var url = uri + "?apiKey=" + apiKey + filter;
+  console.log(url);
   request.get({
     headers: {'content-type':'application/json'},
-    url:     uri + "?apiKey=" + apiKey,
-  }, function(err, response, body){
+    url:     url,
+  }, function(err, response, body) {
     return callback(err, JSON.parse(body))
   });
 }
 
 function setUserSummary(summary, uri, apiKey, callback) {
+  console.log(summary, uri)
   request.post({
     headers: {'content-type' : 'application/json'},
     url:     uri + "?apiKey=" + apiKey,
@@ -35,14 +40,15 @@ function setUserSummary(summary, uri, apiKey, callback) {
 }
 
 function getUserRank(userId, score, uri, apiKey, callback) {
+  console.log(userId, score, uri);
   var filter = '&q={"score":{$gte:' + score + '}}';
   var sort = '&s={"score":-1,"timestamp":1}';
   var url = uri + "?c=true&apiKey=" + apiKey + filter + sort;
-  console.log(url)
+  console.log(url);
   request.get({
     headers: {'content-type':'application/json'},
     url:     url,
-  }, function(err, response, body){
+  }, function(err, response, body) {
     return callback(err, JSON.parse(body))
   });
 }
