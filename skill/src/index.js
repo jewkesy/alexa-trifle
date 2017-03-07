@@ -283,12 +283,34 @@ function getSummary(prefix, sessionAttributes, callback) {
 }
 
 function getRank(userId, callback) {
-  // userRank
-  return callback(null, {});
+  mongo.getUserSummary(userId, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, user) {
+    var text;
+    if (user.length === 0) {
+      text = "Hello, it looks you have yet to play the game and start building your rank.  Would you like to play now?";
+      var speechlet = skillHelper.buildSpeechletResponse("Your Global Rank", text, "Not Ranked", false, false);
+      return callback({}, speechlet);
+    }
+
+    mongo.getUserRank(userId, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, rank) {
+      var text = "Welcome back.  Your global rank is " + rank + ". Would you like a quick game now?";
+      var speechlet = skillHelper.buildSpeechletResponse("Your Global Rank", text, rank, false, false);
+      return callback({}, speechlet);
+    });
+  });
 }
 
 function getScore(userId, callback) {
-  // userScore
+  mongo.getUserSummary(userId, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, user) {
+    var text;
+    var score = 0;
+    if (user.length === 0) {
+      text = "Hello, it looks you have yet to play the game and start building your score.  Would you like to play now?";
+    } else {
+      score = user.score;
+      text = "Welcome back.  Your global score is " + score + ". Would you like a quick game now?";
+    }
 
-  return callback(null, {});
+    var speechlet = skillHelper.buildSpeechletResponse("Your Global Score", text, score, false, false);
+    return callback({}, speechlet);
+  });
 }
