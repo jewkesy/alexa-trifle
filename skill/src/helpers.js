@@ -60,6 +60,9 @@ module.exports = {
 
 function prepQuestionForSSML(text) {
 
+	//  H&uuml;davendigar, c) Adrianople, or d) S&ouml;ğ&uuml;t  ö
+	text = replaceAll(text, "&ouml;", "ö");
+	text = replaceAll(text, "&uuml;", "ü");
 	text = replaceAll(text, "&Aring;", "Å");
 
 	text = replaceAll(text, "&ldquo;", "&quot;");

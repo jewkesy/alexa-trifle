@@ -53,7 +53,7 @@ function onSessionEnded(sessionEndedRequest, session) { // Called when the user 
 
 function onLaunch(launchRequest, session, callback) { // Called when the user launches the app without specifying what they want.
   console.log("onLaunch requestId=" + launchRequest.requestId + ", sessionId=" + session.sessionId);
-  startGame(session.user.userId, callback);
+  startGame("Hello. ", session.user.userId, callback);
 }
 
 function onIntent(intentRequest, session, callback) { // Called when the user specifies an intent for this application.
@@ -222,7 +222,7 @@ function processAnswer(input, session, callback) {
   }
 }
 
-function startGame(userId, callback) {
+function startGame(prefix, userId, callback) {
   // userId, uri, apiKey, callback
   mongo.getUserSummary(userId, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, user) {
     if (user.length === 0) {
@@ -247,7 +247,7 @@ function startGame(userId, callback) {
       userDetails: user[0]
     };
 
-    askQuestion("Hello. ", sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
+    askQuestion(prefix, sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
       console.log(speechlet);
       return callback(sessionAttributes, speechlet);
     });
