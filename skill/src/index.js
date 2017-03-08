@@ -14,7 +14,7 @@ var MONGO_API_KEY = process.env.MONGO_API_KEY   || process.argv[5];
 
 exports.handler = function (event, context) {
   try {
-    // console.log(event.request);
+    console.log(event.request);
     // console.log("event.session.application.applicationId=" + event.session.application.applicationId, "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID);
 
     // if (event.session.application.applicationId !== "amzn1.echo-sdk-ams.app." + ALEXA_APP_ID) {
@@ -58,13 +58,13 @@ function onLaunch(launchRequest, session, callback) { // Called when the user la
 
 function onIntent(intentRequest, session, callback) { // Called when the user specifies an intent for this application.
   // console.log("onIntent requestId=" + intentRequest.requestId + ", sessionId=" + session.sessionId + ", intentName=" + intentRequest.intent.name);
-  // console.log('onIntent', intentRequest)
+  console.log(intentRequest)
 
   var intent = intentRequest.intent, intentName = intentRequest.intent.name;
 
-  var sessionAttributes = session.attributes;
+  // var sessionAttributes = session.attributes;
 
-  if (typeof sessionAttributes == 'undefined') return startGame(session.user.userId, callback);
+  // if (typeof sessionAttributes == 'undefined') return startGame(session.user.userId, callback);
   // event.request.intent.slots.Answer.value
   switch(intentName) {
     case "AMAZON.StopIntent":
@@ -86,9 +86,9 @@ function onIntent(intentRequest, session, callback) { // Called when the user sp
     case "RepeatIntent":
       return repeatQuestion(intentName, session, callback);
     case "RankIntent":
-      return getRank(session, callback);
+      return getRank(session.user.userId, callback);
     case "ScoreIntent":
-      return getScore(session, callback);
+      return getScore(session.user.userId, callback);
     default:
       return invalidAnswer(intentName, session, callback);
   }
@@ -96,7 +96,7 @@ function onIntent(intentRequest, session, callback) { // Called when the user sp
 
 function stop(intent, session, callback) {
   var sessionAttributes = session.attributes;
-  sessionAttributes.intent = intent;
+  // sessionAttributes.intent = intent;
   callback(sessionAttributes, skillHelper.buildSpeechletResponse("Goodbye", "Thanks for playing", "", true, false));
 }
 
@@ -303,10 +303,12 @@ function getSummary(prefix, sessionAttributes, callback) {
 }
 
 function getRank(userId, callback) {
+  console.log(userId)
   mongo.getUserSummary(userId, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, user) {
+    console.log(user)
     var text;
     if (user.length === 0) {
-      text = "Hello, it looks you have yet to play the game and start building your rank.  Would you like to play now?";
+      text = "Hello, it looks like you have yet to play the game and start building your rank.  Would you like to play now?";
       var speechlet = skillHelper.buildSpeechletResponse("Your Global Rank", text, "Not Ranked", false, false);
       return callback({}, speechlet);
     }
@@ -320,13 +322,15 @@ function getRank(userId, callback) {
 }
 
 function getScore(userId, callback) {
+  console.log(userId)
   mongo.getUserSummary(userId, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, user) {
+    console.log(user)
     var text;
     var score = 0;
     if (user.length === 0) {
-      text = "Hello, it looks you have yet to play the game and start building your score.  Would you like to play now?";
+      text = "Hello, it looks like you have yet to play the game and start building your score.  Would you like to play now?";
     } else {
-      score = user.score;
+      score = user[0].score;
       text = "Welcome back.  Your global score is " + score + ". Would you like a quick game now?";
     }
 

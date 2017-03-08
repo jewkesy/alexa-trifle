@@ -59,6 +59,9 @@ module.exports = {
 }
 
 function prepQuestionForSSML(text) {
+
+	text = replaceAll(text, "&Aring;", "Å");
+
 	text = replaceAll(text, "&ldquo;", "&quot;");
 	text = replaceAll(text, "&rdquo;", "&quot;");
 
@@ -67,7 +70,7 @@ function prepQuestionForSSML(text) {
 	text = replaceAll(text, ".. ", ". ");
 	text = replaceAll(text, "!. ", "! ");
 
-	console.log(text)
+	// console.log(text)
 	return text;
 }
 

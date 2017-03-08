@@ -1,16 +1,13 @@
-StopIntent stop
 CancelIntent cancel
-HelpIntent help
-HelpIntent help me
 TrueIntent true
 FalseIntent false
 AIntent a
 BIntent b
 CIntent c
 DIntent d
-YesIntent yes
-NoIntent no
 RankIntent rank
+RankIntent for my rank
+RankIntent from my rank
 RankIntent get rank
 RankIntent what is my rank
 RankIntent what rank am i
@@ -19,10 +16,13 @@ RankIntent what ranking am i
 RankIntent what is my global ranking
 RankIntent tell me my rank
 ScoreIntent score
+ScoreIntent for my score
+ScoreIntent from my score
 ScoreIntent get score
 ScoreIntent what is my score
 ScoreIntent what score am i
 ScoreIntent tell me my score
+ScoreIntent for my school
 RepeatIntent repeat
 RepeatIntent repeat the question
 RepeatIntent say again
