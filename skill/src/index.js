@@ -225,7 +225,15 @@ function processAnswer(input, session, callback) {
 function startGame(userId, callback) {
   // userId, uri, apiKey, callback
   mongo.getUserSummary(userId, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, user) {
-    if (user.length == 0) user.score = 0;
+    if (user.length === 0) {
+      user = [{
+        userId: userId,
+        startDate: new Date(),
+        startTimestamp: new Date().getTime(),
+        score: 0,
+        games: 0
+      }];
+    }
 
     console.log(user);
 
@@ -236,7 +244,7 @@ function startGame(userId, callback) {
       correctAnswers: [],
       shouldEndSession: false,
       device: 'Alexa',
-      userScore: user.score
+      userDetails: user[0]
     };
 
     askQuestion("Hello. ", sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
@@ -265,21 +273,33 @@ function getSummary(prefix, sessionAttributes, callback) {
     summary += " points. "
   }
 
+  sessionAttributes.userDetails.score += score;
+  sessionAttributes.userDetails.games++;
+  sessionAttributes.userDetails.date = new Date();
+  sessionAttributes.userDetails.timestamp = new Date().getTime();
+
   // push score
+  mongo.setUserSummary(sessionAttributes.userDetails, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, result) {
+    console.log(err, result)
+    // return callback(err, result);
+    var combinedScore = sessionAttributes.userDetails.score;
 
-  // grab new rank
-  var rank = 3
+    // grab new rank
+    mongo.getUserRank(sessionAttributes.userDetails.userId, combinedScore, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, rank) {
 
-  // create card
-  var combinedScore = score + sessionAttributes.userScore;
-  var cardText = "Points this game: " + score + "\nTotal score: " + combinedScore + "\nGlobal rank: #" + rank;
+      // create card
+      
+      var cardText = "Points this game: " + score + "\nTotal score: " + combinedScore + "\nGlobal rank: #" + rank;
 
-  summary += "You have a total of " + combinedScore + " points and your global rank position is now number " + rank + ". ";
+      summary += "You have a total of " + combinedScore + " points and your global rank position is now number " + rank + ". ";
 
-  // console.log(alexa, sessionAttributes)
-  var speechlet = skillHelper.buildSpeechletResponse("Game Summary", prefix + summary + "Would you like to play again?", "Would you like to play again?", false, true, cardText);
-  // console.log(speechlet)
-  return callback(null, sessionAttributes, speechlet);
+      // console.log(alexa, sessionAttributes)
+      var speechlet = skillHelper.buildSpeechletResponse("Game Summary", prefix + summary + "Would you like to play again?", "Would you like to play again?", false, true, cardText);
+      // console.log(speechlet)
+      return callback(null, sessionAttributes, speechlet);
+    });
+    
+  });
 }
 
 function getRank(userId, callback) {
