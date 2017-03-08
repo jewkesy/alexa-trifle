@@ -248,7 +248,7 @@ function startGame(prefix, userId, callback) {
     };
 
     askQuestion(prefix, sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
-      console.log(speechlet);
+      console.log(sessionAttributes, speechlet);
       return callback(sessionAttributes, speechlet);
     });
   });
