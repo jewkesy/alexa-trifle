@@ -75,7 +75,7 @@ function onIntent(intentRequest, session, callback) { // Called when the user sp
       return processGameHelp(intentName, session, callback);
     case "PlayIntent":
     case "AMAZON.YesIntent":
-      return startGame(session.user.userId, callback);
+      return startGame("", session.user.userId, callback);
     case "TrueIntent":
     case "FalseIntent":
     case "AIntent":

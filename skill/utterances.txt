@@ -7,6 +7,8 @@ CIntent c
 DIntent d
 RankIntent rank
 RankIntent for my rank
+RankIntent for my ride
+RankIntent for ready
 RankIntent from my rank
 RankIntent get rank
 RankIntent what is my rank
