@@ -8,6 +8,8 @@ DIntent d
 RankIntent rank
 RankIntent for my rank
 RankIntent for my ride
+RankIntent my rank
+RankIntent what my rank is
 RankIntent for ready
 RankIntent from my rank
 RankIntent get rank
@@ -18,7 +20,9 @@ RankIntent what ranking am i
 RankIntent what is my global ranking
 RankIntent tell me my rank
 ScoreIntent score
+ScoreIntent what my score is
 ScoreIntent for my score
+ScoreIntent my score
 ScoreIntent from my score
 ScoreIntent get score
 ScoreIntent what is my score
