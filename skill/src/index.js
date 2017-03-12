@@ -245,7 +245,8 @@ function startGame(prefix, userId, callback) {
       correctAnswers: [],
       shouldEndSession: false,
       device: 'Alexa',
-      userDetails: user[0]
+      userDetails: user[0],
+      gameOver: false
     };
 
     askQuestion(prefix, sessionAttributes, QUESTIONS_URI + 'api.php?amount=1&difficulty=easy', sessionAttributes.questionNum, function(err, sessionAttributes, speechlet) {
@@ -278,6 +279,9 @@ function getSummary(prefix, sessionAttributes, callback) {
   sessionAttributes.userDetails.games++;
   sessionAttributes.userDetails.date = new Date();
   sessionAttributes.userDetails.timestamp = new Date().getTime();
+
+  sessionAttributes.questionType = 'yesno';
+  sessionAttributes.gameOver = true;
 
   // push score
   mongo.setUserSummary(sessionAttributes.userDetails, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, result) {
