@@ -344,7 +344,7 @@ function getRank(userId, callback) {
     mongo.getUserRank(user[0].userId, user[0].score, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, rank) {
       var text = "Welcome back.  Your global rank is " + rank + ". Would you like a quick game now?";
       var speechlet = skillHelper.buildSpeechletResponse("Your Global Rank", text, rank, false, false);
-      return callback({}, speechlet);
+      return callback({questionType: 'yesno'}, speechlet);
     });
   });
 }
@@ -363,6 +363,6 @@ function getScore(userId, callback) {
     }
 
     var speechlet = skillHelper.buildSpeechletResponse("Your Global Score", text, score, false, false);
-    return callback({}, speechlet);
+    return callback({questionType: 'yesno'}, speechlet);
   });
 }
