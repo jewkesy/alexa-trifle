@@ -69,13 +69,12 @@ function onIntent(intentRequest, session, callback) { // Called when the user sp
   switch(intentName) {
     case "AMAZON.StopIntent":
     case "CancelIntent":
-    case "AMAZON.NoIntent":
       return stop(intentName, session, callback);
     case "AMAZON.HelpIntent":
       return processGameHelp(intentName, session, callback);
     case "PlayIntent":
     case "AMAZON.YesIntent":
-      return startGame("", session.user.userId, callback);
+    case "AMAZON.NoIntent":
     case "TrueIntent":
     case "FalseIntent":
     case "AIntent":
@@ -102,6 +101,16 @@ function stop(intent, session, callback) {
 
 function repeatQuestion(intent, session, callback) {
   var sessionAttributes = session.attributes;
+  console.log(sessionAttributes)
+  if (sessionAttributes.gameOver == true) {
+    console.log('should end')
+
+      var speechlet = skillHelper.buildSpeechletResponse("Game Summary", "Would you like to play again?", "Would you like to play again?", false);
+      console.log(speechlet)
+      // return callback(null, sessionAttributes, speechlet);
+
+    return callback(sessionAttributes, speechlet);
+  }
   // console.log('TODO Handle true or false or a, b, c or d response');
   // console.log(sessionAttributes)
   callback(sessionAttributes,
@@ -177,6 +186,19 @@ function processAnswer(input, session, callback) {
       default:
         return invalidAnswer(input, session, callback);
     }
+  } else if (sessionAttributes.questionType == 'yesno') {
+    switch (input) {
+      case "AMAZON.YesIntent":
+        // answer = 'yes';
+        return startGame("", session.user.userId, callback);
+        break;
+      case "AMAZON.NoIntent":
+        // answer = 'no';
+        return stop(input, session, callback);
+        break;
+      default:
+        return invalidAnswer(input, session, callback);
+    }
   } else {
     return invalidAnswer(input, session, callback);
   }
@@ -202,7 +224,7 @@ function processAnswer(input, session, callback) {
 
   // console.log(prefix, sessionAttributes)
 
-  if (sessionAttributes.questionNum == 3) {
+  if (sessionAttributes.questionNum >= 3) {
     // console.log('TODO Set attribs for completed game')
 
     getSummary(prefix + '. ', sessionAttributes, function (err, sessionAttributes, speechlet) {
@@ -282,6 +304,7 @@ function getSummary(prefix, sessionAttributes, callback) {
 
   sessionAttributes.questionType = 'yesno';
   sessionAttributes.gameOver = true;
+  sessionAttributesrepromptText: "Would you like to play again?"
 
   // push score
   mongo.setUserSummary(sessionAttributes.userDetails, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, result) {
@@ -300,7 +323,7 @@ function getSummary(prefix, sessionAttributes, callback) {
 
       // console.log(alexa, sessionAttributes)
       var speechlet = skillHelper.buildSpeechletResponse("Game Summary", prefix + summary + "Would you like to play again?", "Would you like to play again?", false, true, cardText);
-      // console.log(speechlet)
+      console.log(speechlet)
       return callback(null, sessionAttributes, speechlet);
     });
     

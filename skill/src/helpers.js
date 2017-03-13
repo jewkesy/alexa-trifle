@@ -60,6 +60,8 @@ module.exports = {
 
 function prepQuestionForSSML(text) {
 
+	text = replaceAll(text, "True or False. True or false", "True or False.")
+
 	text = replaceAll(text, "&#039;", "'");
 	text = replaceAll(text, "&ouml;", "ö");
 	text = replaceAll(text, "&uuml;", "ü");

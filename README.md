@@ -26,9 +26,9 @@ Alexa will keep your score and tell you your world ranking position compared aga
 The more games you play and the more questions you answer correctly, the greater chance to increase your world rank.
 
 ## Example Phrases
- - Alexa, play Trifle
- - Alexa, ask Trifle what my score is
- - Alexa, ask Trifle what my rank is
+ - Alexa, play Trifle Quiz
+ - Alexa, ask Trifle Quiz what my score is
+ - Alexa, ask Trifle Quiz what my rank is
 
 ## Keywords
 questions, trivia, fun, knowledge
