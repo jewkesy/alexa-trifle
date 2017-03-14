@@ -1,13 +1,29 @@
 ![Alt text](./skill/icons/trifle_s.png?raw=false)
 
-
 # alexa-trifle
 An Alexa Skill trivia game that tests your knowledge against the Alexa community.
+
+
+Enable alexa-20q
+
+Go to your Alexa App and search for Trifle Quiz
+
+Alternatively, go to Amazon whereby you can enable the Skill direct
+
+For English (UK)
+
+https://www.amazon.co.uk/dp/B06XHMRDJJ/
+
+For English (US)
+
+https://www.amazon.com/dp/B06XHMRDJJ/
 
 ## Short Skill Description
 Three questions. Three difficulties. You versus the world!
 
 ## Full Skill Description
+Three questions. Three difficulties. You versus the world!
+
 You will be asked three questions from a random selection of categories with increasing difficulty, but increasing score.
 
 Questions are answered either by "true" or "false", or multi-choice.  For multi-choice, answer using "a", b", "c" or "d" after listening to the choices.
