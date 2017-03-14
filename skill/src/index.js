@@ -317,7 +317,7 @@ function getSummary(prefix, sessionAttributes, callback) {
 
       // create card
       
-      var cardText = "Points this game: " + score + "\nTotal score: " + combinedScore + "\nGlobal rank: #" + rank;
+      var cardText = "Points this game: " + score + "\nTotal score: " + combinedScore + "\nGlobal rank: #" + rank + '\n\nPlease visit www.daryljewkes.com to see live game scores from the Alexa community';
 
       summary += "You have a total of " + combinedScore + " points and your global rank position is now number " + rank + ". ";
 
