@@ -41,15 +41,18 @@ module.exports = {
 	handleSpeechQuerks: function (speech) {
 		return handleSpeechQuerks(speech);
 	},
+	handleCharacters: function (cardText) {
+		return handleCharacters(cardText);
+	},
 	getQuestionNo: function (text){
 		return getQuestionNo(text);
 	},
 	getGuessText: function (guessText) {
 		return getGuessText(guessText);
 	},
-  getRandomFact: function (summary) {
-    return getRandomFact(summary);
-  },
+	getRandomFact: function (summary) {
+		return getRandomFact(summary);
+	},
 	randomInt: function (low, high) {
 		return randomInt(low, high);
 	},
@@ -211,8 +214,13 @@ function getStartGamePhrase(player, greetingIdx, bePolite) {
 
 function handleSpeechQuerks(speech) {
 	speech = prepQuestionForSSML(speech);
-  if (querks.indexOf(speech) > -1) return speech.substring(0, speech.length - 1);
-  return speech;
+	if (querks.indexOf(speech) > -1) return speech.substring(0, speech.length - 1);
+	return speech;
+}
+
+function handleCharacters(cardText) {
+	cardText = replaceAll(cardText, "&quot;", "'");
+	return cardText;
 }
 
 function buildNaturalLangList(items, finalWord) {
@@ -234,7 +242,7 @@ function getRandomFact(summary) {
   return "TODO";
   var facts = [
     "Since this Skill launched, the Alexa community are currently playing an average of " + summary.avgGameHr + " games every hour!",
-    "Since this Skill launched, the Alexa community are currently playing an average of " +  numberWithCommas(summary.avgGameHr*24) + " games every day!",
+    "Since this Skill launched, the Alexa community are currently playing an average of " + numberWithCommas(summary.avgGameHr*24) + " games every day!",
   ];
 
   var retVal =  facts[randomInt(0, facts.length )];

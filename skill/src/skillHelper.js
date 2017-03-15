@@ -17,6 +17,7 @@ function buildSpeechletResponse(title, output, repromptText, shouldEndSession, s
   if (showCard && typeof cardType == 'undefined') cardType = "Simple";  // Standard
   if (showCard && typeof cardText == 'undefined') cardText = output;
 
+  if (typeof cardText != 'undefined') cardText = helpers.handleCharacters(cardText);
   output = helpers.handleSpeechQuerks(output);
   var retVal = {
     outputSpeech: {
