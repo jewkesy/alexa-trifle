@@ -71,6 +71,7 @@ function prepQuestionForSSML(text) {
 	text = replaceAll(text, "&Aring;", "Å");
 	text = replaceAll(text, "&eacute;", "é");
 	text = replaceAll(text, "&Eacute;", "É");
+	text = replaceAll(text, "&sup2;", "2");
 
 	text = replaceAll(text, "&ldquo;", "&quot;");
 	text = replaceAll(text, "&rdquo;", "&quot;");

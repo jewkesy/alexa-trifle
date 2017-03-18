@@ -85,9 +85,9 @@ function onIntent(intentRequest, session, callback) { // Called when the user sp
     case "RepeatIntent":
       return repeatQuestion(intentName, session, callback);
     case "RankIntent":
-      return getRank(session.user.userId, callback);
+      return getRank(intentName, session, callback);
     case "ScoreIntent":
-      return getScore(session.user.userId, callback);
+      return getScore(intentName, session, callback);
     default:
       return invalidAnswer(intentName, session, callback);
   }
@@ -131,8 +131,12 @@ function invalidAnswer(intent, session, callback) {
 
   if (sessionAttributes.questionType == 'multiple') {
     questiontext += "You can say a, b, c or d";
-  } else {
+  } else if (sessionAttributes.questionType == 'yesno') {
+    questiontext += "You can say yes or no";
+  } else if (sessionAttributes.questionType == 'truefalse') {
     questiontext += "You can say true or false";
+  } else {
+    questiontext += "";
   }
   console.log(sessionAttributes)
   var speechlet = skillHelper.buildSpeechletResponse("Invalid Answer", questiontext, sessionAttributes.repromptText, false, false);
@@ -330,10 +334,12 @@ function getSummary(prefix, sessionAttributes, callback) {
   });
 }
 
-function getRank(userId, callback) {
-  console.log(userId)
+function getRank(input, session, callback) {
+  if (!isEmpty(session.attributes)) return invalidAnswer(input, session, callback);
+  var userId = session.user.userId;
+  console.log(session)
   mongo.getUserSummary(userId, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, user) {
-    console.log(user)
+    // console.log(user)
     var text;
     if (user.length === 0) {
       text = "Hello, it looks like you have yet to play the game and start building your rank.  Would you like to play now?";
@@ -349,10 +355,12 @@ function getRank(userId, callback) {
   });
 }
 
-function getScore(userId, callback) {
-  console.log(userId)
+function getScore(input, session, callback) {
+  if (!isEmpty(session.attributes)) return invalidAnswer(input, session, callback);
+  var userId = session.user.userId;
+  console.log(session)
   mongo.getUserSummary(userId, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, user) {
-    console.log(user)
+    // console.log(user)
     var text;
     var score = 0;
     if (user.length === 0) {
@@ -361,8 +369,17 @@ function getScore(userId, callback) {
       score = user[0].score;
       text = "Welcome back.  Your global score is " + score + ". Would you like a quick game now?";
     }
-
+    console.log(text, score)
     var speechlet = skillHelper.buildSpeechletResponse("Your Global Score", text, score, false, false);
     return callback({questionType: 'yesno'}, speechlet);
   });
 }
+
+function isEmpty(obj) {
+    for(var key in obj) {
+        if(obj.hasOwnProperty(key))
+            return false;
+    }
+    return true;
+}
+
