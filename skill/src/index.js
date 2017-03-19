@@ -321,13 +321,13 @@ function getSummary(prefix, sessionAttributes, callback) {
 
       // create card
       
-      var cardText = "Points this game: " + score + "\nTotal score: " + combinedScore + "\nGlobal rank: #" + rank + '\n\nPlease visit www.daryljewkes.com to see live game scores from the Alexa community';
+      var cardText = "Points this game: " + score + "\nTotal score: " + combinedScore + "\nGlobal rank: #" + rank.rank + '/' + rank.total + '\n\nPlease visit www.daryljewkes.com to see live game scores from the Alexa community';
 
-      summary += "You have a total of " + combinedScore + " points and your global rank position is now number " + rank + ". ";
+      summary += "You have a total of " + combinedScore + " points and your global rank position is now number " + rank.rank + ' out of ' + rank.total + ". ";
 
       // console.log(alexa, sessionAttributes)
       var speechlet = skillHelper.buildSpeechletResponse("Game Summary", prefix + summary + "Would you like to play again?", "Would you like to play again?", false, true, cardText);
-      console.log(speechlet)
+      // console.log(speechlet)
       return callback(null, sessionAttributes, speechlet);
     });
     
@@ -337,7 +337,7 @@ function getSummary(prefix, sessionAttributes, callback) {
 function getRank(input, session, callback) {
   if (!isEmpty(session.attributes)) return invalidAnswer(input, session, callback);
   var userId = session.user.userId;
-  console.log(session)
+  // console.log(session)
   mongo.getUserSummary(userId, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, user) {
     // console.log(user)
     var text;
@@ -348,8 +348,9 @@ function getRank(input, session, callback) {
     }
 
     mongo.getUserRank(user[0].userId, user[0].score, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, rank) {
-      var text = "Welcome back.  Your global rank is " + rank + ". Would you like a quick game now?";
-      var speechlet = skillHelper.buildSpeechletResponse("Your Global Rank", text, rank, false, false);
+      // console.log(rank)
+      var text = "Welcome back.  Your global rank is " + rank.rank + ' out of ' + rank.total + ". Would you like a quick game now?";
+      var speechlet = skillHelper.buildSpeechletResponse("Your Global Rank", text, "Would you like to play a game?", false, false);
       return callback({questionType: 'yesno'}, speechlet);
     });
   });
@@ -358,7 +359,7 @@ function getRank(input, session, callback) {
 function getScore(input, session, callback) {
   if (!isEmpty(session.attributes)) return invalidAnswer(input, session, callback);
   var userId = session.user.userId;
-  console.log(session)
+  // console.log(session)
   mongo.getUserSummary(userId, MONGO_URI + 'trifle/collections/game', MONGO_API_KEY, function(err, user) {
     // console.log(user)
     var text;
@@ -369,8 +370,8 @@ function getScore(input, session, callback) {
       score = user[0].score;
       text = "Welcome back.  Your global score is " + score + ". Would you like a quick game now?";
     }
-    console.log(text, score)
-    var speechlet = skillHelper.buildSpeechletResponse("Your Global Score", text, score, false, false);
+    // console.log(text, score)
+    var speechlet = skillHelper.buildSpeechletResponse("Your Global Score", text, "Would you like to play a game?", false, false);
     return callback({questionType: 'yesno'}, speechlet);
   });
 }
