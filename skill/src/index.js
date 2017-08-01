@@ -96,7 +96,13 @@ function onIntent(intentRequest, session, callback) { // Called when the user sp
 function stop(intent, session, callback) {
   var sessionAttributes = session.attributes;
   // sessionAttributes.intent = intent;
-  callback(sessionAttributes, skillHelper.buildSpeechletResponse("Goodbye", "Thanks for playing", "", true, false));
+  
+  var text = "Thanks for playing";
+
+  var i = randomInt(0,1);
+  if (i == 0) text += ". If you like movies, checkout my sister skill Popcorn Quiz. Goodbye."
+
+  callback(sessionAttributes, skillHelper.buildSpeechletResponse("Goodbye", text, "", true, false));
 }
 
 function repeatQuestion(intent, session, callback) {
@@ -382,5 +388,9 @@ function isEmpty(obj) {
             return false;
     }
     return true;
+}
+
+function randomInt(low, high) {
+  return Math.floor(Math.random() * high);
 }
 
