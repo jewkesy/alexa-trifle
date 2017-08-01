@@ -24,6 +24,8 @@ module.exports = {
 }
 
 function getFinalScore(scores) {
+  return score;
+  console.log(scores);
   var score;   // calculate score with bonus
   var a = scores[0];
   var b = scores[1];
